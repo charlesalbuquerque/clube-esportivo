@@ -1,0 +1,143 @@
+-- ============================================================
+-- Sistema Web para Gestão de Clubes Esportivos
+-- Schema inicial (MVP) — Supabase / Postgres
+-- Rode este script no SQL Editor do seu projeto Supabase
+-- ============================================================
+
+-- 1) PROFILES
+-- Unifica dados de admin e associado. O id é o mesmo do auth.users
+-- (criado automaticamente quando alguém se cadastra via Supabase Auth).
+create table profiles (
+  id uuid primary key references auth.users (id) on delete cascade,
+  full_name text not null,
+  role text not null default 'associado' check (role in ('admin', 'associado')),
+  phone text,
+  status text not null default 'ativo' check (status in ('ativo', 'inativo')),
+  joined_at date not null default current_date,
+  created_at timestamptz not null default now()
+);
+
+-- 2) MENSALIDADES
+create table mensalidades (
+  id bigint generated always as identity primary key,
+  associado_id uuid not null references profiles (id) on delete cascade,
+  referencia_mes date not null,          -- ex: 2026-09-01 representa setembro/2026
+  valor numeric(10, 2) not null,
+  status text not null default 'pendente' check (status in ('pago', 'pendente', 'atrasado')),
+  data_pagamento date,
+  created_at timestamptz not null default now(),
+  unique (associado_id, referencia_mes)
+);
+
+-- 3) QUADRAS
+create table quadras (
+  id bigint generated always as identity primary key,
+  nome text not null,
+  tipo text not null,                    -- ex: 'tenis', 'futsal', 'volei'
+  descricao text
+);
+
+-- 4) RESERVAS
+create table reservas (
+  id bigint generated always as identity primary key,
+  quadra_id bigint not null references quadras (id) on delete cascade,
+  associado_id uuid not null references profiles (id) on delete cascade,
+  data date not null,
+  hora_inicio time not null,
+  hora_fim time not null,
+  status text not null default 'confirmada' check (status in ('confirmada', 'cancelada')),
+  created_at timestamptz not null default now(),
+  -- impede duas reservas confirmadas na mesma quadra/data/horário de início
+  unique (quadra_id, data, hora_inicio)
+);
+
+-- 5) PARTIDAS
+create table partidas (
+  id bigint generated always as identity primary key,
+  jogador1_id uuid not null references profiles (id) on delete cascade,
+  jogador2_id uuid not null references profiles (id) on delete cascade,
+  placar1 int not null default 0,
+  placar2 int not null default 0,
+  quadra_id bigint references quadras (id),
+  data date not null default current_date,
+  created_at timestamptz not null default now()
+);
+
+-- 6) RANKING (view calculada — não é tabela, evita dado duplicado/desatualizado)
+create view ranking as
+with jogos as (
+  select jogador1_id as jogador_id,
+         case when placar1 > placar2 then 1 else 0 end as vitoria,
+         case when placar1 < placar2 then 1 else 0 end as derrota
+  from partidas
+  union all
+  select jogador2_id as jogador_id,
+         case when placar2 > placar1 then 1 else 0 end as vitoria,
+         case when placar2 < placar1 then 1 else 0 end as derrota
+  from partidas
+)
+select
+  p.id as associado_id,
+  p.full_name,
+  coalesce(sum(j.vitoria), 0) as vitorias,
+  coalesce(sum(j.derrota), 0) as derrotas,
+  coalesce(sum(j.vitoria), 0) * 3 as pontos   -- 3 pontos por vitória, ajustável
+from profiles p
+left join jogos j on j.jogador_id = p.id
+where p.role = 'associado'
+group by p.id, p.full_name
+order by pontos desc;
+
+-- ============================================================
+-- ROW LEVEL SECURITY (RLS)
+-- Sem isso, qualquer pessoa com a chave anon lê/escreve tudo.
+-- ============================================================
+
+alter table profiles enable row level security;
+alter table mensalidades enable row level security;
+alter table quadras enable row level security;
+alter table reservas enable row level security;
+alter table partidas enable row level security;
+
+-- profiles: cada um vê/edita o próprio perfil; admin vê todos
+create policy "usuario ve o proprio perfil"
+  on profiles for select
+  using (auth.uid() = id or exists (
+    select 1 from profiles where id = auth.uid() and role = 'admin'
+  ));
+
+create policy "usuario edita o proprio perfil"
+  on profiles for update
+  using (auth.uid() = id);
+
+-- mensalidades: associado vê as próprias; admin vê e edita todas
+create policy "associado ve suas mensalidades"
+  on mensalidades for select
+  using (associado_id = auth.uid() or exists (
+    select 1 from profiles where id = auth.uid() and role = 'admin'
+  ));
+
+create policy "admin gerencia mensalidades"
+  on mensalidades for all
+  using (exists (select 1 from profiles where id = auth.uid() and role = 'admin'));
+
+-- quadras: todo mundo autenticado pode ver
+create policy "todos veem quadras"
+  on quadras for select
+  using (auth.role() = 'authenticated');
+
+-- reservas: associado vê/cria as próprias; admin vê todas
+create policy "associado gerencia suas reservas"
+  on reservas for all
+  using (associado_id = auth.uid() or exists (
+    select 1 from profiles where id = auth.uid() and role = 'admin'
+  ));
+
+-- partidas: todo mundo autenticado pode ver; só admin registra
+create policy "todos veem partidas"
+  on partidas for select
+  using (auth.role() = 'authenticated');
+
+create policy "admin registra partidas"
+  on partidas for insert
+  with check (exists (select 1 from profiles where id = auth.uid() and role = 'admin'));
