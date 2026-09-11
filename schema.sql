@@ -124,6 +124,32 @@ create policy "usuario edita o proprio perfil"
   on profiles for update
   using (auth.uid() = id);
 
+create policy "admin edita qualquer perfil"
+  on profiles for update
+  using (public.is_admin())
+  with check (public.is_admin());
+
+-- Sem restrição de coluna, a policy de self-update acima deixaria um
+-- associado trocar o próprio role/status via API direta (não pela UI, mas
+-- RLS não impede). Esse trigger reverte essas duas colunas se quem edita
+-- não é admin.
+create or replace function public.prevent_self_role_status_change()
+returns trigger
+language plpgsql
+as $$
+begin
+  if not public.is_admin() then
+    new.role := old.role;
+    new.status := old.status;
+  end if;
+  return new;
+end;
+$$;
+
+create trigger before_profiles_update
+  before update on profiles
+  for each row execute function public.prevent_self_role_status_change();
+
 -- mensalidades: associado vê as próprias; admin vê e edita todas
 create policy "associado ve suas mensalidades"
   on mensalidades for select
