@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { headers } from "next/headers";
 import { createClient } from "@/lib/supabase/server";
 
 export type AuthFormState = {
@@ -28,12 +29,20 @@ export async function signup(
 
   const supabase = await createClient();
 
+  const headersList = await headers();
+  const origin =
+    headersList.get("origin") ??
+    `${headersList.get("x-forwarded-proto") ?? "http"}://${headersList.get("host")}`;
+
   // A linha em `profiles` (role padrão 'associado') é criada automaticamente
   // por um trigger no banco (ver schema.sql) a partir de `full_name` aqui.
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: { data: { full_name: name } },
+    options: {
+      data: { full_name: name },
+      emailRedirectTo: `${origin}/auth/callback`,
+    },
   });
 
   if (error) {

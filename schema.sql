@@ -99,12 +99,26 @@ alter table quadras enable row level security;
 alter table reservas enable row level security;
 alter table partidas enable row level security;
 
+-- Função auxiliar pra checar se o usuário logado é admin. Roda como
+-- SECURITY DEFINER (contorna RLS na consulta interna) — necessário porque
+-- uma policy de SELECT em profiles que consulta a própria profiles causa
+-- "42P17 infinite recursion detected in policy" no Postgres.
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (
+    select 1 from profiles where id = auth.uid() and role = 'admin'
+  );
+$$;
+
 -- profiles: cada um vê/edita o próprio perfil; admin vê todos
 create policy "usuario ve o proprio perfil"
   on profiles for select
-  using (auth.uid() = id or exists (
-    select 1 from profiles where id = auth.uid() and role = 'admin'
-  ));
+  using (auth.uid() = id or public.is_admin());
 
 create policy "usuario edita o proprio perfil"
   on profiles for update

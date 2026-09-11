@@ -35,7 +35,8 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+  const isPublicRoute =
+    PUBLIC_ROUTES.includes(pathname) || pathname.startsWith("/auth/");
 
   // Não autenticado tentando acessar rota que não é /login nem /cadastro
   if (!user && !isPublicRoute) {
