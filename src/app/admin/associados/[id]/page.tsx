@@ -2,13 +2,17 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateBR } from "@/lib/format";
+import { AssociadoStatusForm } from "../AssociadoStatusForm";
 
 export default async function AssociadoDetalhePage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ erro?: string }>;
 }) {
   const { id } = await params;
+  const { erro } = await searchParams;
   const supabase = await createClient();
 
   const { data: associado, error } = await supabase
@@ -35,7 +39,9 @@ export default async function AssociadoDetalhePage({
           {associado.full_name}
         </h1>
 
-        <dl className="space-y-2 text-sm">
+        {erro && <p className="mb-4 text-sm text-red-600">{erro}</p>}
+
+        <dl className="mb-6 space-y-2 text-sm">
           <div className="flex justify-between">
             <dt className="text-zinc-500">Telefone</dt>
             <dd className="text-zinc-900">{associado.phone ?? "—"}</dd>
@@ -46,11 +52,13 @@ export default async function AssociadoDetalhePage({
               {formatDateBR(associado.joined_at)}
             </dd>
           </div>
-          <div className="flex justify-between">
-            <dt className="text-zinc-500">Status</dt>
-            <dd className="text-zinc-900">{associado.status}</dd>
-          </div>
         </dl>
+
+        <AssociadoStatusForm
+          id={associado.id}
+          status={associado.status}
+          redirectTo={`/admin/associados/${associado.id}`}
+        />
       </div>
     </div>
   );

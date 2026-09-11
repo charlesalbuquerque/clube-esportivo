@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { formatDateBR } from "@/lib/format";
+import { AssociadoStatusForm } from "./AssociadoStatusForm";
 
 export default async function AssociadosPage({
   searchParams,
@@ -21,6 +22,9 @@ export default async function AssociadosPage({
   }
 
   const { data: associados, error } = await query;
+  const redirectTo = q
+    ? `/admin/associados?q=${encodeURIComponent(q)}`
+    : "/admin/associados";
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
@@ -86,8 +90,12 @@ export default async function AssociadosPage({
                   <td className="px-4 py-2 text-zinc-600">
                     {formatDateBR(associado.joined_at)}
                   </td>
-                  <td className="px-4 py-2 text-zinc-600">
-                    {associado.status}
+                  <td className="px-4 py-2">
+                    <AssociadoStatusForm
+                      id={associado.id}
+                      status={associado.status}
+                      redirectTo={redirectTo}
+                    />
                   </td>
                   <td className="px-4 py-2">
                     <Link
