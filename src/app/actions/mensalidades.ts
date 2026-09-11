@@ -54,11 +54,7 @@ export async function createMensalidade(redirectTo: string, formData: FormData) 
  * Marca uma mensalidade como paga: status='pago' + data_pagamento = hoje.
  * Ação de admin. `id` e `redirectTo` vêm de `.bind(null, id, redirectTo)`.
  */
-export async function marcarComoPaga(
-  id: number,
-  redirectTo: string,
-  _formData: FormData
-) {
+export async function marcarComoPaga(id: number, redirectTo: string) {
   const supabase = await createClient();
   const hoje = new Date().toISOString().slice(0, 10);
 
