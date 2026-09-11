@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { getCurrentProfile } from "@/lib/auth";
 import { LogoutButton } from "@/components/LogoutButton";
 
@@ -17,6 +18,12 @@ export default async function AssociadoPage() {
           Área do associado. Os módulos de mensalidades, reservas e ranking
           vão aparecer aqui.
         </p>
+        <Link
+          href="/associado/perfil"
+          className="mt-4 inline-block text-sm text-zinc-600 underline"
+        >
+          Meu perfil
+        </Link>
       </div>
     </div>
   );
