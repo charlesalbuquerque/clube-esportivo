@@ -99,12 +99,26 @@ alter table quadras enable row level security;
 alter table reservas enable row level security;
 alter table partidas enable row level security;
 
+-- Função auxiliar pra checar se o usuário logado é admin. Roda como
+-- SECURITY DEFINER (contorna RLS na consulta interna) — necessário porque
+-- uma policy de SELECT em profiles que consulta a própria profiles causa
+-- "42P17 infinite recursion detected in policy" no Postgres.
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+set search_path = public
+stable
+as $$
+  select exists (
+    select 1 from profiles where id = auth.uid() and role = 'admin'
+  );
+$$;
+
 -- profiles: cada um vê/edita o próprio perfil; admin vê todos
 create policy "usuario ve o proprio perfil"
   on profiles for select
-  using (auth.uid() = id or exists (
-    select 1 from profiles where id = auth.uid() and role = 'admin'
-  ));
+  using (auth.uid() = id or public.is_admin());
 
 create policy "usuario edita o proprio perfil"
   on profiles for update
@@ -141,3 +155,31 @@ create policy "todos veem partidas"
 create policy "admin registra partidas"
   on partidas for insert
   with check (exists (select 1 from profiles where id = auth.uid() and role = 'admin'));
+
+-- ============================================================
+-- CRIAÇÃO AUTOMÁTICA DE PROFILE NO CADASTRO
+-- Não existe policy de INSERT em profiles (por segurança: cliente não
+-- deveria poder criar profiles arbitrariamente). Em vez disso, um trigger
+-- com SECURITY DEFINER cria a linha assim que o usuário é criado em
+-- auth.users — funciona mesmo se a confirmação de e-mail estiver ativada
+-- (nesse caso o usuário ainda não tem sessão logo após o signUp).
+-- O nome completo é lido de auth.users.raw_user_meta_data (passado via
+-- options.data no supabase.auth.signUp() do app).
+-- ============================================================
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer set search_path = public
+as $$
+begin
+  insert into public.profiles (id, full_name)
+  values (new.id, coalesce(new.raw_user_meta_data ->> 'full_name', ''))
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
