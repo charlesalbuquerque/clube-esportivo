@@ -45,3 +45,49 @@ export async function updateAssociadoStatus(
   revalidatePath(`/admin/associados/${id}`);
   redirect(redirectTo);
 }
+
+export type ProfileFormState = {
+  error?: string;
+  message?: string;
+};
+
+/**
+ * Atualiza nome e telefone do próprio usuário logado. Não aceita role nem
+ * status — mesmo que aceitasse, o trigger prevent_self_role_status_change
+ * (schema.sql) reverte qualquer tentativa de mudar essas colunas se quem
+ * edita não é admin.
+ */
+export async function updateOwnProfile(
+  _prevState: ProfileFormState | undefined,
+  formData: FormData
+): Promise<ProfileFormState> {
+  const fullName = String(formData.get("full_name") ?? "").trim();
+  const phone = String(formData.get("phone") ?? "").trim();
+
+  if (!fullName) {
+    return { error: "Informe seu nome." };
+  }
+
+  const supabase = await createClient();
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    return { error: "Sessão expirada. Faça login novamente." };
+  }
+
+  const { error } = await supabase
+    .from("profiles")
+    .update({ full_name: fullName, phone: phone || null })
+    .eq("id", user.id);
+
+  if (error) {
+    return { error: "Não foi possível salvar. Tente novamente." };
+  }
+
+  revalidatePath("/associado/perfil");
+  revalidatePath("/associado");
+  return { message: "Perfil atualizado." };
+}
