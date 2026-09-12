@@ -15,15 +15,23 @@ export default async function AssociadoPage() {
           <LogoutButton />
         </div>
         <p className="text-sm text-zinc-600">
-          Área do associado. Os módulos de mensalidades, reservas e ranking
-          vão aparecer aqui.
+          Área do associado. Os módulos de reservas e ranking vão aparecer
+          aqui.
         </p>
-        <Link
-          href="/associado/perfil"
-          className="mt-4 inline-block text-sm text-zinc-600 underline"
-        >
-          Meu perfil
-        </Link>
+        <div className="mt-4 flex gap-4">
+          <Link
+            href="/associado/perfil"
+            className="text-sm text-zinc-600 underline"
+          >
+            Meu perfil
+          </Link>
+          <Link
+            href="/associado/mensalidades"
+            className="text-sm text-zinc-600 underline"
+          >
+            Minhas mensalidades
+          </Link>
+        </div>
       </div>
     </div>
   );
