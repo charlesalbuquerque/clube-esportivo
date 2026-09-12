@@ -1,5 +1,6 @@
 import { LogoutButton } from "@/components/LogoutButton";
 import { AssociadosCard } from "./AssociadosCard";
+import { MensalidadesCard } from "./MensalidadesCard";
 
 export default function AdminPage() {
   return (
@@ -13,6 +14,7 @@ export default function AdminPage() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <AssociadosCard />
+        <MensalidadesCard />
       </div>
     </div>
   );
