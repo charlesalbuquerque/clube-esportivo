@@ -2,6 +2,7 @@ import { LogoutButton } from "@/components/LogoutButton";
 import { AssociadosCard } from "./AssociadosCard";
 import { MensalidadesCard } from "./MensalidadesCard";
 import { QuadrasReservasCard } from "./QuadrasReservasCard";
+import { RankingCard } from "./RankingCard";
 
 export default function AdminPage() {
   return (
@@ -17,6 +18,7 @@ export default function AdminPage() {
         <AssociadosCard />
         <MensalidadesCard />
         <QuadrasReservasCard />
+        <RankingCard />
       </div>
     </div>
   );
