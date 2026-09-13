@@ -12,25 +12,43 @@ export default async function AssociadoPage() {
           <h1 className="text-xl font-semibold text-zinc-900">
             Olá, {profile?.full_name}
           </h1>
+
           <LogoutButton />
         </div>
+
         <p className="text-sm text-zinc-600">
-          Área do associado. Os módulos de reservas e ranking vão aparecer
-          aqui.
+          Área do associado. Acesse os módulos disponíveis abaixo.
         </p>
-        <div className="mt-4 flex gap-4">
+
+        <div className="mt-5 grid gap-3">
           <Link
-            href="/associado/perfil"
-            className="text-sm text-zinc-600 underline"
+            href="/associado/reservas"
+            className="rounded-lg border border-zinc-200 p-4 transition hover:bg-zinc-50"
           >
-            Meu perfil
+            <h2 className="text-sm font-semibold text-zinc-900">
+              Reservas
+            </h2>
+
+            <p className="mt-1 text-xs text-zinc-500">
+              Consulte a disponibilidade e reserve uma quadra.
+            </p>
           </Link>
-          <Link
-            href="/associado/mensalidades"
-            className="text-sm text-zinc-600 underline"
-          >
-            Minhas mensalidades
-          </Link>
+
+          <div className="flex gap-4">
+            <Link
+              href="/associado/perfil"
+              className="text-sm text-zinc-600 underline"
+            >
+              Meu perfil
+            </Link>
+
+            <Link
+              href="/associado/mensalidades"
+              className="text-sm text-zinc-600 underline"
+            >
+              Minhas mensalidades
+            </Link>
+          </div>
         </div>
       </div>
     </div>

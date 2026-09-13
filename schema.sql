@@ -213,3 +213,61 @@ $$;
 create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
+
+  -- Horários disponíveis de cada quadra
+create table if not exists quadra_horarios (
+  id bigint generated always as identity primary key,
+  quadra_id bigint not null references quadras(id) on delete cascade,
+  dia_semana smallint not null check (dia_semana between 0 and 6),
+  hora_inicio time not null,
+  hora_fim time not null,
+  ativo boolean not null default true,
+  created_at timestamptz not null default now(),
+
+  check (hora_inicio < hora_fim),
+
+  unique (
+    quadra_id,
+    dia_semana,
+    hora_inicio,
+    hora_fim
+  )
+);
+create or replace function public.prevent_reserva_overlap()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+
+  if new.status = 'confirmada'
+     and exists (
+       select 1
+       from public.reservas r
+       where r.quadra_id = new.quadra_id
+         and r.data = new.data
+         and r.status = 'confirmada'
+         and r.id <> coalesce(new.id, 0)
+         and new.hora_inicio < r.hora_fim
+         and new.hora_fim > r.hora_inicio
+     )
+  then
+    raise exception 'HORARIO_INDISPONIVEL';
+  end if;
+
+  return new;
+
+end;
+$$;
+
+drop trigger if exists before_reserva_overlap on reservas;
+
+
+create trigger before_reserva_overlap
+
+before insert or update on reservas
+
+for each row
+
+execute function public.prevent_reserva_overlap();
