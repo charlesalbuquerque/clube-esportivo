@@ -3,6 +3,7 @@ import { AssociadosCard } from "./AssociadosCard";
 import { MensalidadesCard } from "./MensalidadesCard";
 import { QuadrasReservasCard } from "./QuadrasReservasCard";
 import { RankingCard } from "./RankingCard";
+import { PartidasCard } from "./PartidasCard";
 
 export default function AdminPage() {
   return (
@@ -19,6 +20,7 @@ export default function AdminPage() {
         <MensalidadesCard />
         <QuadrasReservasCard />
         <RankingCard />
+        <PartidasCard />
       </div>
     </div>
   );
