@@ -162,4 +162,13 @@ Nenhuma imagem real. Dois placeholders a serem substituídos por material do clu
 Logo: atualmente um quadrado `#d8e84f` com as iniciais em Spectral. Substituir pela marca real do clube. Nenhum ícone é usado — a interface é toda tipográfica e de quadrados coloridos, propositalmente.
 
 ## Files
+- `screenshots/` — capturas de referência de cada tela:
+  - `01-login.png` (perfil associado) · `02-login-perfil-admin.png` (seletor de perfil ativo)
+  - `03-painel-geral.png` · `04-associados.png` · `05-mensalidades.png`
+  - `06-reserva-de-quadras.png` · `07-partidas-e-ranking.png` · `08-area-do-associado.png`
+- `telas-html/` — **um arquivo HTML autocontido por tela** (abre offline, com duplo clique, sem depender de outros arquivos):
+  - `01-login.html` · `02-painel-geral.html` · `03-associados.html` · `04-mensalidades.html`
+  - `05-reserva-de-quadras.html` · `06-partidas-e-ranking.html` · `07-area-do-associado.html`
+  - Cada arquivo abre já na tela indicada e a navegação interna continua funcionando.
+- `Gestao Clube — Todas as telas.dc.html` — **as 7 telas renderizadas em HTML, uma abaixo da outra** (equivalente aos prints, mas interativo e inspecionável no DevTools). Abre direto no navegador.
 - `Gestao Clube.dc.html` — protótipo completo: todas as 7 telas, navegação e dados de exemplo. Abre direto no navegador. A marcação está no template e os dados/estilos derivados no método `renderVals()` da classe de lógica no fim do arquivo.

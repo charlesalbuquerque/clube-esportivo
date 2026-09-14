@@ -52,6 +52,14 @@ create table reservas (
 );
 
 -- 5) PARTIDAS
+--
+-- ATENÇÃO: este create table ficou desatualizado em relação ao banco real
+-- (achado ao adaptar as telas do design_handoff/ em 2026-09-14). A coluna
+-- `tipo` e a tabela `partida_participantes` abaixo já existem no Supabase
+-- e são usadas por app/actions/partidas.ts (partida em equipe), mas nunca
+-- foram adicionadas aqui. Deixando documentado — quem mexeu direto no SQL
+-- Editor sem atualizar este arquivo, por favor mantenha os dois em sync
+-- da próxima vez.
 create table partidas (
   id bigint generated always as identity primary key,
   jogador1_id uuid not null references profiles (id) on delete cascade,
@@ -60,7 +68,21 @@ create table partidas (
   placar2 int not null default 0,
   quadra_id bigint references quadras (id),
   data date not null default current_date,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  tipo text not null default 'individual' check (tipo in ('individual', 'equipe'))
+);
+
+-- Participantes extras de uma partida em equipe (lado_a / lado_b). Em
+-- partidas individuais essa tabela não é usada — jogador1_id/jogador2_id
+-- já bastam. Em partidas de equipe, jogador1_id/jogador2_id guardam só o
+-- primeiro participante de cada lado (ver comentário em
+-- app/actions/partidas.ts) e esta tabela guarda todos os demais.
+create table if not exists partida_participantes (
+  id bigint generated always as identity primary key,
+  partida_id bigint not null references partidas (id) on delete cascade,
+  associado_id uuid not null references profiles (id) on delete cascade,
+  lado text not null check (lado in ('lado_a', 'lado_b')),
+  unique (partida_id, associado_id)
 );
 
 -- 6) RANKING (view calculada — não é tabela, evita dado duplicado/desatualizado)

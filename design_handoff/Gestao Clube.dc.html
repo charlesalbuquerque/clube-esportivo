@@ -154,13 +154,13 @@
 
         <div style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; align-items: start;">
           <section style="background: #fff; border: 1px solid #e2e5df;">
-            <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
               <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Receita e inadimplência</h2>
               <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8b918c;">últimos 6 meses</span>
               <a href="#mensalidades" onClick="{{ goMensalidades }}" style="margin-left: auto; font-size: 12px;">ver mensalidades</a>
             </div>
             <div style="padding: 18px 16px 14px;">
-              <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; align-items: end; height: 168px;">
+              <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; align-items: end; height: 168px;">
                 <sc-for list="{{ revenueBars }}" as="b" hint-placeholder-count="6">
                   <div style="display: flex; flex-direction: column; justify-content: flex-end; gap: 7px; height: 100%;">
                     <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5d645f; text-align: center;">{{ b.total }}</div>
@@ -170,16 +170,16 @@
                   </div>
                 </sc-for>
               </div>
-              <div style="display: flex; gap: 18px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #eceee8; font-size: 11px; color: #5d645f;">
+              <div style="display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #eceee8; font-size: 11px; color: #5d645f;">
                 <span style="display: flex; align-items: center; gap: 7px;"><span style="width: 10px; height: 10px; background: #12572f;"></span>Recebido</span>
                 <span style="display: flex; align-items: center; gap: 7px;"><span style="width: 10px; height: 10px; background: #e7c88a;"></span>Em aberto</span>
-                <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace;">inadimplência set/26: 6,3%</span>
+                <span style="font-family: 'IBM Plex Mono', monospace;">inadimplência set/26: 6,3%</span>
               </div>
             </div>
           </section>
 
           <section style="order: -1; background: #fff; border: 1px solid #e2e5df;">
-            <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
               <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Ocupação das quadras</h2>
               <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8b918c;">média dos últimos 7 dias</span>
               <a href="#quadras" onClick="{{ goQuadras }}" style="margin-left: auto; font-size: 12px;">grade completa</a>
@@ -230,7 +230,7 @@
           </section>
 
           <section style="background: #fff; border: 1px solid #e2e5df;">
-            <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
               <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Líderes do ranking</h2>
               <a href="#partidas" onClick="{{ goPartidas }}" style="margin-left: auto; font-size: 12px;">ranking completo</a>
             </div>
@@ -635,7 +635,7 @@
 </sc-if>
 
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;clubName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Clube Atlético Aurora&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;densidade&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Compacta&quot;,&quot;Confortável&quot;],&quot;default&quot;:&quot;Compacta&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tabelas&quot;},&quot;estiloStatus&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Preenchido&quot;,&quot;Contorno&quot;],&quot;default&quot;:&quot;Preenchido&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tabelas&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;clubName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Clube Atlético Aurora&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;tela&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Login&quot;,&quot;Painel geral&quot;,&quot;Associados&quot;,&quot;Mensalidades&quot;,&quot;Reserva de quadras&quot;,&quot;Partidas e ranking&quot;,&quot;Área do associado&quot;],&quot;default&quot;:&quot;Login&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tela inicial&quot;},&quot;densidade&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Compacta&quot;,&quot;Confortável&quot;],&quot;default&quot;:&quot;Compacta&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tabelas&quot;},&quot;estiloStatus&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Preenchido&quot;,&quot;Contorno&quot;],&quot;default&quot;:&quot;Preenchido&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tabelas&quot;}}">
 const GREEN = '#12572f', INK = '#14181a', MUTED = '#7c837e';
 
 const chipFor = (status, variant) => {
@@ -663,8 +663,14 @@ const varStyle = (n) => 'font-family:\'IBM Plex Mono\',monospace;font-size:11px;
   (n > 0 ? '#12572f' : n < 0 ? '#9c2230' : '#8b918c') + ';';
 const varText = (n) => (n > 0 ? '+' : n < 0 ? '−' : '±') + Math.abs(n);
 
+const TELA_MAP = {
+  'Login': 'login', 'Painel geral': 'dashboard', 'Associados': 'associados',
+  'Mensalidades': 'mensalidades', 'Reserva de quadras': 'quadras',
+  'Partidas e ranking': 'partidas', 'Área do associado': 'socio'
+};
+
 class Component extends DCLogic {
-  state = { screen: 'login', role: 'admin', memberFilter: 'Todos', feeFilter: 'Todos', rankFilter: 'Tênis · simples' };
+  state = { screen: null, role: null, memberFilter: 'Todos', feeFilter: 'Todos', rankFilter: 'Tênis · simples' };
 
   go = (screen) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ screen }); };
 
@@ -695,7 +701,8 @@ class Component extends DCLogic {
     const chipVariant = p.estiloStatus ?? 'Preenchido';
     const pad = dense ? '9px' : '13px';
     const s = this.state;
-    const screen = s.screen;
+    const screen = s.screen || TELA_MAP[p.tela] || 'login';
+    const role = s.role || (screen === 'socio' ? 'associado' : 'admin');
     const [crumb, pageTitle, primaryAction] = this.titleFor(screen);
 
     const cell = 'padding:' + pad + ' 8px;font-size:13px;color:#3d443f;vertical-align:top;';
@@ -706,7 +713,7 @@ class Component extends DCLogic {
     const rowStyle = 'border-bottom:1px solid #eceee8;';
     const tableCells = { cell, cellMono, cellMonoRight, cellName, cellActions, rowStyle };
 
-    const navItems = this.navFor(s.role).map(([key, label, badge]) => {
+    const navItems = this.navFor(role).map(([key, label, badge]) => {
       const active = key === screen;
       return {
         label, badge, go: this.go(key),
@@ -808,18 +815,18 @@ class Component extends DCLogic {
       showApp: screen !== 'login',
       loginEmail: 'marina.duarte@email.com',
       tabAssociado: 'padding:11px;border:none;cursor:pointer;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;' +
-        (s.role === 'associado' ? 'background:' + GREEN + ';color:#fff;font-weight:600;' : 'background:#fff;color:#5d645f;'),
+        (role === 'associado' ? 'background:' + GREEN + ';color:#fff;font-weight:600;' : 'background:#fff;color:#5d645f;'),
       tabAdmin: 'padding:11px;border:none;border-left:1px solid #d9ddd6;cursor:pointer;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;' +
-        (s.role === 'admin' ? 'background:' + GREEN + ';color:#fff;font-weight:600;' : 'background:#fff;color:#5d645f;'),
+        (role === 'admin' ? 'background:' + GREEN + ';color:#fff;font-weight:600;' : 'background:#fff;color:#5d645f;'),
       pickAssociado: () => this.setState({ role: 'associado' }),
       pickAdmin: () => this.setState({ role: 'admin' }),
-      doLogin: () => this.setState({ screen: this.state.role === 'admin' ? 'dashboard' : 'socio' }),
+      doLogin: () => this.setState({ screen: (this.state.role || 'admin') === 'admin' ? 'dashboard' : 'socio' }),
       doLogout: this.go('login'),
-      switchRole: () => this.setState((st) => ({ role: st.role === 'admin' ? 'associado' : 'admin', screen: st.role === 'admin' ? 'socio' : 'dashboard' })),
-      switchLabel: s.role === 'admin' ? 'Ver como associado' : 'Voltar ao admin',
-      userName: s.role === 'admin' ? 'Joana Vieira' : 'Marina Duarte',
-      userRoleLabel: s.role === 'admin' ? 'Secretaria · admin' : 'Associada titular · 0142',
-      navGroupLabel: s.role === 'admin' ? 'administração' : 'meu clube',
+      switchRole: () => this.setState({ role: role === 'admin' ? 'associado' : 'admin', screen: role === 'admin' ? 'socio' : 'dashboard' }),
+      switchLabel: role === 'admin' ? 'Ver como associado' : 'Voltar ao admin',
+      userName: role === 'admin' ? 'Joana Vieira' : 'Marina Duarte',
+      userRoleLabel: role === 'admin' ? 'Secretaria · admin' : 'Associada titular · 0142',
+      navGroupLabel: role === 'admin' ? 'administração' : 'meu clube',
       navItems, crumb, pageTitle, primaryAction,
 
       isDashboard: screen === 'dashboard',

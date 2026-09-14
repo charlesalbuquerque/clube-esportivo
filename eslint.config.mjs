@@ -12,9 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    // Runtime do protótipo de design (design-handoff/) — não é código do
-    // app, é o suporte do arquivo .dc.html (ver design-handoff/README.md).
-    "design-handoff/**",
+    // Runtime do protótipo de design (design_handoff/) — não é código do
+    // app, é o suporte dos arquivos .dc.html/.html (ver design_handoff/README.md).
+    "design_handoff/**",
   ]),
 ]);
 
