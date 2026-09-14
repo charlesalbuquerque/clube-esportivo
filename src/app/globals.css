@@ -37,6 +37,43 @@
 
   --color-accent: #18181b;
   --color-accent-hover: #27272a;
+
+  /*
+   * Paleta e fontes do design-handoff/ (README.md "Design Tokens").
+   * Prefixo "brand-" pra não colidir com a paleta genérica acima —
+   * usada nas telas recriadas a partir do protótipo (landing page e,
+   * na sequência, as telas internas).
+   */
+  --color-brand-green-700: #12572f;
+  --color-brand-green-800: #0b3d20;
+  --color-brand-green-900: #0f3a21;
+  --color-brand-green-850: #123f25;
+  --color-brand-green-800b: #1c5231;
+  --color-brand-green-border: #245536;
+  --color-brand-green-border-soft: #2c603d;
+  --color-brand-lime: #d8e84f;
+  --color-brand-teal: #235f74;
+
+  --color-brand-ink: #14181a;
+  --color-brand-ink-soft: #3d443f;
+  --color-brand-muted: #7c837e;
+  --color-brand-muted-2: #5d645f;
+  --color-brand-text-dim: #bfd3c3;
+  --color-brand-text-dim-2: #b6c9b9;
+  --color-brand-text-faint: #6f9179;
+  --color-brand-text-faint-2: #8fae95;
+
+  --color-brand-bg: #f2f3f0;
+  --color-brand-surface: #ffffff;
+  --color-brand-surface-alt: #fbfbf9;
+  --color-brand-border: #e2e5df;
+  --color-brand-border-soft: #eceee8;
+  --color-brand-input-border: #d9ddd6;
+  --color-brand-focus-ring: #dfe9db;
+
+  --font-display: var(--font-spectral);
+  --font-club-sans: var(--font-plex-sans);
+  --font-club-mono: var(--font-plex-mono);
 }
 
 body {

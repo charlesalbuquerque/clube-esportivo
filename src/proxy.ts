@@ -4,7 +4,7 @@ import { NextResponse, type NextRequest } from "next/server";
 // Nas Next.js 16 o antigo "Middleware" virou "Proxy" (mesmo conceito,
 // arquivo `proxy.ts` em vez de `middleware.ts` — ver AGENTS.md).
 
-const PUBLIC_ROUTES = ["/login", "/cadastro"];
+const PUBLIC_ROUTES = ["/", "/login", "/cadastro"];
 
 export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });

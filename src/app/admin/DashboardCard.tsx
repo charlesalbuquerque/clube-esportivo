@@ -6,9 +6,11 @@ export function DashboardCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-lg border border-line-subtle bg-surface p-6 shadow-sm">
-      <h2 className="mb-3 text-sm font-medium text-ink-muted">{title}</h2>
-      {children}
+    <div className="border border-brand-border bg-brand-surface">
+      <h2 className="border-b border-brand-border px-4 py-[13px] text-[11px] font-semibold uppercase tracking-[0.1em] text-brand-muted">
+        {title}
+      </h2>
+      <div className="p-4">{children}</div>
     </div>
   );
 }

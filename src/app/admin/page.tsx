@@ -1,4 +1,3 @@
-import { LogoutButton } from "@/components/LogoutButton";
 import { AssociadosCard } from "./AssociadosCard";
 import { MensalidadesCard } from "./MensalidadesCard";
 import { QuadrasReservasCard } from "./QuadrasReservasCard";
@@ -7,13 +6,10 @@ import { PartidasCard } from "./PartidasCard";
 
 export default function AdminPage() {
   return (
-    <div className="mx-auto max-w-4xl px-4 py-10">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-ink">
-          Painel Administrativo
-        </h1>
-        <LogoutButton />
-      </div>
+    <div className="flex flex-col gap-[18px] px-6 pt-5 pb-10">
+      <h1 className="font-display text-2xl font-semibold text-brand-ink">
+        Painel Administrativo
+      </h1>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <AssociadosCard />

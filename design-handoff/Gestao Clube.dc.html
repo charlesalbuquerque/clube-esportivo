@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #f2f3f0; color: #14181a; font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }
+  a { color: #12572f; text-decoration: none; }
+  a:hover { color: #0b3d20; text-decoration: underline; }
+  input, select, button, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+  ::placeholder { color: #a6aba6; }
+  table { border-collapse: collapse; width: 100%; }
+</style>
+</helmet>
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+<div style="min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(360px, 460px);">
+  <div style="background: #0f3a21; padding: 44px 48px; display: flex; flex-direction: column; justify-content: space-between; gap: 40px;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 34px; height: 34px; background: #d8e84f; display: grid; place-items: center; font-family: 'Spectral', serif; font-weight: 700; font-size: 16px; color: #0f3a21;">CA</div>
+      <div style="font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #e7efe5;">{{ clubName }}</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 26px;">
+      <h1 style="margin: 0; max-width: 20ch; font-family: 'Spectral', serif; font-weight: 600; font-size: 54px; line-height: 1.04; letter-spacing: -0.015em; color: #ffffff; text-wrap: balance;">A gestão do clube, medida em números.</h1>
+      <p style="margin: 0; max-width: 46ch; font-size: 15px; line-height: 1.65; color: #b6c9b9;">Associados, mensalidades, ocupação de quadras, partidas e ranking por pontos — um sistema só, com o mesmo dado para a administração e para o associado.</p>
+      <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: #245536; border: 1px solid #245536;">
+        <div style="background: #123f25; padding: 16px 14px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 26px; color: #d8e84f;">412</div>
+          <div style="margin-top: 5px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8fae95;">associados ativos</div>
+        </div>
+        <div style="background: #123f25; padding: 16px 14px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 26px; color: #d8e84f;">7</div>
+          <div style="margin-top: 5px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8fae95;">quadras gerenciadas</div>
+        </div>
+        <div style="background: #123f25; padding: 16px 14px;">
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 26px; color: #d8e84f;">1.8k</div>
+          <div style="margin-top: 5px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #8fae95;">partidas registradas</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 22px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; color: #6f9179;">
+      <span>v2.4</span><span>SUPORTE: RAMAL 220</span><span>DADOS ATÉ 14/09/2026</span>
+    </div>
+  </div>
+
+  <div style="background: #fbfbf9; padding: 44px 40px; display: flex; align-items: center; border-left: 1px solid #e2e5df;">
+    <div style="width: 100%; display: flex; flex-direction: column; gap: 20px;">
+      <div>
+        <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Acesso ao sistema</div>
+        <h2 style="margin: 7px 0 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 30px; letter-spacing: -0.01em;">Identifique-se</h2>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; border: 1px solid #d9ddd6;">
+        <button type="button" onClick="{{ pickAssociado }}" style="{{ tabAssociado }}">Associado</button>
+        <button type="button" onClick="{{ pickAdmin }}" style="{{ tabAdmin }}">Administração</button>
+      </div>
+
+      <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7c837e;">E-mail</span>
+        <input type="email" value="{{ loginEmail }}" style="padding: 12px 13px; border: 1px solid #d9ddd6; background: #fff; font-size: 14px;" style-focus="padding: 12px 13px; border: 1px solid #12572f; background: #fff; font-size: 14px; outline: 2px solid #dfe9db;" />
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+        <span style="font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #7c837e;">Senha</span>
+        <input type="password" value="clube2026" style="padding: 12px 13px; border: 1px solid #d9ddd6; background: #fff; font-size: 14px;" style-focus="padding: 12px 13px; border: 1px solid #12572f; background: #fff; font-size: 14px; outline: 2px solid #dfe9db;" />
+      </label>
+
+      <div style="display: flex; align-items: center; justify-content: space-between; font-size: 13px; color: #6b7370;">
+        <label style="display: flex; align-items: center; gap: 8px;"><input type="checkbox" style="accent-color: #12572f; width: 14px; height: 14px;" />Manter conectado</label>
+        <a href="#recuperar">Esqueci a senha</a>
+      </div>
+
+      <button type="button" onClick="{{ doLogin }}" style="padding: 13px; border: 1px solid #12572f; background: #12572f; color: #fff; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;" style-hover="padding: 13px; border: 1px solid #0b3d20; background: #0b3d20; color: #fff; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;">Entrar</button>
+
+      <p style="margin: 0; padding-top: 16px; border-top: 1px solid #e6e8e2; font-size: 13px; line-height: 1.6; color: #6b7370;">Ainda não tem acesso? <a href="#cadastro">Solicitar cadastro</a>. A liberação é feita pela secretaria após conferência dos dados.</p>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ showApp }}" hint-placeholder-val="{{ true }}">
+<div style="min-height: 100vh; display: grid; grid-template-columns: 226px minmax(0, 1fr);">
+
+  <aside style="background: #0f3a21; display: flex; flex-direction: column; gap: 22px; padding: 18px 12px; border-right: 1px solid #0b2e19;">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 6px;">
+      <div style="width: 28px; height: 28px; background: #d8e84f; display: grid; place-items: center; font-family: 'Spectral', serif; font-weight: 700; font-size: 13px; color: #0f3a21;">CA</div>
+      <div style="font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #e7efe5;">{{ clubName }}</div>
+    </div>
+
+    <nav style="display: flex; flex-direction: column; gap: 2px;">
+      <div style="padding: 0 8px 7px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #6f9179;">{{ navGroupLabel }}</div>
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+        <button type="button" onClick="{{ item.go }}" style="{{ item.style }}">
+          <span style="{{ item.marker }}"></span>
+          <span style="flex: 1; text-align: left;">{{ item.label }}</span>
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; opacity: 0.75;">{{ item.badge }}</span>
+        </button>
+      </sc-for>
+    </nav>
+
+    <div style="margin-top: auto; display: flex; flex-direction: column; gap: 10px;">
+      <div style="padding: 11px; border: 1px solid #245536; background: #123f25;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #6f9179;">Sessão</div>
+        <div style="margin-top: 6px; font-size: 13px; font-weight: 600; color: #f0f4ee;">{{ userName }}</div>
+        <div style="margin-top: 2px; font-size: 11px; color: #9ebca4;">{{ userRoleLabel }}</div>
+      </div>
+      <button type="button" onClick="{{ switchRole }}" style="padding: 9px; border: 1px solid #2c603d; background: transparent; color: #cfe0cf; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-align: center;" style-hover="padding: 9px; border: 1px solid #d8e84f; background: transparent; color: #d8e84f; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; text-align: center;">{{ switchLabel }}</button>
+      <button type="button" onClick="{{ doLogout }}" style="padding: 9px; border: 1px solid transparent; background: transparent; color: #7f9d86; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;" style-hover="padding: 9px; border: 1px solid transparent; background: transparent; color: #e7efe5; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;">Sair</button>
+    </div>
+  </aside>
+
+  <main style="min-width: 0; display: flex; flex-direction: column;">
+    <header style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px 18px; padding: 14px 24px; background: #fbfbf9; border-bottom: 1px solid #e2e5df;">
+      <div style="min-width: 0; flex: 1 1 210px;">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8b918c;">{{ crumb }}</div>
+        <h1 style="margin: 3px 0 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 24px; letter-spacing: -0.01em;">{{ pageTitle }}</h1>
+      </div>
+      <div style="margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 10px;">
+        <input type="search" placeholder="Buscar associado, matrícula, reserva…" style="flex: 1 1 170px; min-width: 150px; max-width: 268px; padding: 9px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 13px;" style-focus="flex: 1 1 170px; min-width: 150px; max-width: 268px; padding: 9px 11px; border: 1px solid #12572f; background: #fff; font-size: 13px; outline: 2px solid #dfe9db;" />
+        <div style="display: flex; align-items: center; gap: 8px; padding: 8px 11px; border: 1px solid #e2e5df; background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5d645f;">
+          <span style="width: 6px; height: 6px; background: #12572f;"></span>SET/2026
+        </div>
+        <button type="button" style="padding: 9px 14px; border: 1px solid #12572f; background: #12572f; color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;" style-hover="padding: 9px 14px; border: 1px solid #0b3d20; background: #0b3d20; color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer;">{{ primaryAction }}</button>
+      </div>
+    </header>
+
+    <div style="flex: 1; padding: 20px 24px 40px; display: flex; flex-direction: column; gap: 18px;">
+
+      <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 1px; background: #e2e5df; border: 1px solid #e2e5df;">
+          <sc-for list="{{ kpis }}" as="k" hint-placeholder-count="6">
+            <div style="background: #fff; padding: 14px 15px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8b918c;">{{ k.label }}</div>
+              <div style="margin-top: 9px; display: flex; align-items: baseline; gap: 7px;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 25px; letter-spacing: -0.02em; color: #14181a;">{{ k.value }}</span>
+                <span style="{{ k.deltaStyle }}">{{ k.delta }}</span>
+              </div>
+              <div style="margin-top: 7px; font-size: 11px; color: #7c837e;">{{ k.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 18px; align-items: start;">
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Receita e inadimplência</h2>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8b918c;">últimos 6 meses</span>
+              <a href="#mensalidades" onClick="{{ goMensalidades }}" style="margin-left: auto; font-size: 12px;">ver mensalidades</a>
+            </div>
+            <div style="padding: 18px 16px 14px;">
+              <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; align-items: end; height: 168px;">
+                <sc-for list="{{ revenueBars }}" as="b" hint-placeholder-count="6">
+                  <div style="display: flex; flex-direction: column; justify-content: flex-end; gap: 7px; height: 100%;">
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5d645f; text-align: center;">{{ b.total }}</div>
+                    <div style="{{ b.paidStyle }}"></div>
+                    <div style="{{ b.dueStyle }}"></div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: #8b918c; text-align: center;">{{ b.month }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display: flex; gap: 18px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #eceee8; font-size: 11px; color: #5d645f;">
+                <span style="display: flex; align-items: center; gap: 7px;"><span style="width: 10px; height: 10px; background: #12572f;"></span>Recebido</span>
+                <span style="display: flex; align-items: center; gap: 7px;"><span style="width: 10px; height: 10px; background: #e7c88a;"></span>Em aberto</span>
+                <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace;">inadimplência set/26: 6,3%</span>
+              </div>
+            </div>
+          </section>
+
+          <section style="order: -1; background: #fff; border: 1px solid #e2e5df;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Ocupação das quadras</h2>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #8b918c;">média dos últimos 7 dias</span>
+              <a href="#quadras" onClick="{{ goQuadras }}" style="margin-left: auto; font-size: 12px;">grade completa</a>
+            </div>
+            <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1px; background: #eceee8;">
+              <div style="background: #fff; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8b918c;">por faixa de horário</div>
+                <sc-for list="{{ occupancy }}" as="o" hint-placeholder-count="6">
+                  <div style="display: grid; grid-template-columns: 52px minmax(0, 1fr) 40px; align-items: center; gap: 10px;">
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5d645f;">{{ o.slot }}</span>
+                    <span style="height: 12px; background: #eceee8; display: block;"><span style="{{ o.barStyle }}"></span></span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #14181a; text-align: right;">{{ o.pct }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="background: #fff; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
+                <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8b918c;">por quadra</div>
+                <sc-for list="{{ courtUse }}" as="c" hint-placeholder-count="6">
+                  <div style="display: grid; grid-template-columns: 92px minmax(0, 1fr) 40px; align-items: center; gap: 10px;">
+                    <span style="font-size: 11px; color: #5d645f;">{{ c.name }}</span>
+                    <span style="height: 10px; background: #eceee8; display: block;"><span style="{{ c.barStyle }}"></span></span>
+                    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #14181a; text-align: right;">{{ c.pct }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            <p style="margin: 0; padding: 12px 16px; border-top: 1px solid #eceee8; background: #f7f8f5; font-size: 12px; line-height: 1.55; color: #5d645f;">Pico 19h–21h com 96% de uso — Q1 e Areia 1 esgotam todos os dias. As 22h ociosas se concentram entre 11h e 15h: janela para aulas coletivas e tarifa reduzida.</p>
+          </section>
+        </div>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start;">
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="display: flex; align-items: center; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Pendências da secretaria</h2>
+            </div>
+            <div>
+              <sc-for list="{{ tasks }}" as="t" hint-placeholder-count="4">
+                <div style="display: grid; grid-template-columns: 8px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 12px 16px; border-bottom: 1px solid #eceee8;">
+                  <span style="{{ t.dotStyle }}"></span>
+                  <div style="min-width: 0;">
+                    <div style="font-size: 13px; font-weight: 500;">{{ t.title }}</div>
+                    <div style="margin-top: 2px; font-size: 11px; color: #7c837e;">{{ t.meta }}</div>
+                  </div>
+                  <button type="button" style="padding: 6px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;" style-hover="padding: 6px 11px; border: 1px solid #12572f; background: #f4f7f2; color: #12572f; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;">{{ t.action }}</button>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Líderes do ranking</h2>
+              <a href="#partidas" onClick="{{ goPartidas }}" style="margin-left: auto; font-size: 12px;">ranking completo</a>
+            </div>
+            <table>
+              <tbody>
+                <sc-for list="{{ topRanking }}" as="p" hint-placeholder-count="5">
+                  <tr style="border-bottom: 1px solid #eceee8;">
+                    <td style="padding: 11px 16px; width: 34px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #8b918c;">{{ p.pos }}</td>
+                    <td style="padding: 11px 8px; font-size: 13px; font-weight: 500;">{{ p.name }}</td>
+                    <td style="padding: 11px 8px; font-size: 12px; color: #7c837e;">{{ p.cat }}</td>
+                    <td style="padding: 11px 8px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: right;">{{ p.pts }} <span style="font-size: 10px; color: #8b918c;">pts</span></td>
+                    <td style="padding: 11px 16px 11px 8px; width: 56px; text-align: right;"><span style="{{ p.varStyle }}">{{ p.varText }}</span></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isAssociados }}" hint-placeholder-val="{{ true }}">
+      <section style="background: #fff; border: 1px solid #e2e5df;">
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #e2e5df;">
+          <sc-for list="{{ memberFilters }}" as="f" hint-placeholder-count="4">
+            <button type="button" onClick="{{ f.go }}" style="{{ f.style }}">{{ f.label }}</button>
+          </sc-for>
+          <div style="margin-left: auto; display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7c837e;">
+            <span>{{ memberCountLabel }}</span>
+            <button type="button" style="padding: 7px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;" style-hover="padding: 7px 11px; border: 1px solid #12572f; background: #f4f7f2; color: #12572f; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;">Exportar CSV</button>
+          </div>
+        </div>
+        <div style="overflow-x: auto;">
+          <table>
+            <thead>
+              <tr style="background: #f7f8f5; border-bottom: 1px solid #e2e5df;">
+                <th style="padding: 9px 16px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Matrícula</th>
+                <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Associado</th>
+                <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Categoria</th>
+                <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Modalidades</th>
+                <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Desde</th>
+                <th style="padding: 9px 8px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Plano</th>
+                <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Situação</th>
+                <th style="padding: 9px 16px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{ members }}" as="m" hint-placeholder-count="10">
+                <tr style="{{ m.rowStyle }}">
+                  <td style="{{ m.cellMono }}">{{ m.id }}</td>
+                  <td style="{{ m.cellName }}">{{ m.name }}<div style="font-size: 11px; font-weight: 400; color: #8b918c;">{{ m.email }}</div></td>
+                  <td style="{{ m.cell }}">{{ m.cat }}</td>
+                  <td style="{{ m.cell }}">{{ m.sports }}</td>
+                  <td style="{{ m.cellMono }}">{{ m.since }}</td>
+                  <td style="{{ m.cellMonoRight }}">{{ m.plan }}</td>
+                  <td style="{{ m.cell }}"><span style="{{ m.chip }}">{{ m.status }}</span></td>
+                  <td style="{{ m.cellActions }}"><a href="#perfil" onClick="{{ goSocio }}">abrir</a></td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 11px 16px; border-top: 1px solid #e2e5df; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7c837e;">
+          <span>1–10 de 412</span>
+          <span style="display: flex; gap: 6px;">
+            <button type="button" style="padding: 5px 10px; border: 1px solid #d9ddd6; background: #fff; cursor: pointer;">←</button>
+            <button type="button" style="padding: 5px 10px; border: 1px solid #d9ddd6; background: #fff; cursor: pointer;">→</button>
+          </span>
+        </div>
+      </section>
+      </sc-if>
+
+      <sc-if value="{{ isMensalidades }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: #e2e5df; border: 1px solid #e2e5df;">
+          <sc-for list="{{ feeStats }}" as="s" hint-placeholder-count="4">
+            <div style="background: #fff; padding: 14px 15px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8b918c;">{{ s.label }}</div>
+              <div style="margin-top: 8px; font-family: 'IBM Plex Mono', monospace; font-size: 23px; color: #14181a;">{{ s.value }}</div>
+              <div style="margin-top: 6px; font-size: 11px; color: #7c837e;">{{ s.note }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <section style="background: #fff; border: 1px solid #e2e5df;">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #e2e5df;">
+            <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Competência setembro/2026</h2>
+            <sc-for list="{{ feeFilters }}" as="f" hint-placeholder-count="4">
+              <button type="button" onClick="{{ f.go }}" style="{{ f.style }}">{{ f.label }}</button>
+            </sc-for>
+            <button type="button" style="margin-left: auto; padding: 7px 12px; border: 1px solid #12572f; background: #12572f; color: #fff; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;" style-hover="margin-left: auto; padding: 7px 12px; border: 1px solid #0b3d20; background: #0b3d20; color: #fff; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;">Lançar mensalidades</button>
+          </div>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr style="background: #f7f8f5; border-bottom: 1px solid #e2e5df;">
+                  <th style="padding: 9px 16px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Matrícula</th>
+                  <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Associado</th>
+                  <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Vencimento</th>
+                  <th style="padding: 9px 8px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Valor</th>
+                  <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Forma</th>
+                  <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Status</th>
+                  <th style="padding: 9px 16px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Ação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ fees }}" as="f" hint-placeholder-count="10">
+                  <tr style="{{ f.rowStyle }}">
+                    <td style="{{ f.cellMono }}">{{ f.id }}</td>
+                    <td style="{{ f.cellName }}">{{ f.name }}</td>
+                    <td style="{{ f.cellMono }}">{{ f.due }}</td>
+                    <td style="{{ f.cellMonoRight }}">{{ f.value }}</td>
+                    <td style="{{ f.cell }}">{{ f.method }}</td>
+                    <td style="{{ f.cell }}"><span style="{{ f.chip }}">{{ f.status }}</span></td>
+                    <td style="{{ f.cellActions }}"><a href="#baixa">{{ f.action }}</a></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isQuadras }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <section style="background: #fff; border: 1px solid #e2e5df;">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 12px 16px; border-bottom: 1px solid #e2e5df;">
+            <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Segunda, 14 de setembro</h2>
+            <div style="display: flex; gap: 6px;">
+              <button type="button" style="padding: 6px 10px; border: 1px solid #d9ddd6; background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; cursor: pointer;">←</button>
+              <button type="button" style="padding: 6px 10px; border: 1px solid #d9ddd6; background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; cursor: pointer;">hoje</button>
+              <button type="button" style="padding: 6px 10px; border: 1px solid #d9ddd6; background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 11px; cursor: pointer;">→</button>
+            </div>
+            <div style="margin-left: auto; display: flex; gap: 14px; font-size: 11px; color: #5d645f;">
+              <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; border: 1px solid #d9ddd6; background: #fff;"></span>Livre</span>
+              <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; background: #12572f;"></span>Reservado</span>
+              <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; background: #235f74;"></span>Aula</span>
+              <span style="display: flex; align-items: center; gap: 6px;"><span style="width: 10px; height: 10px; background: #e8e9e4; border: 1px solid #d4d7d0;"></span>Manutenção</span>
+            </div>
+          </div>
+          <div style="overflow-x: auto; padding: 0 16px 16px;">
+            <div style="min-width: 760px;">
+              <div style="display: grid; grid-template-columns: 62px repeat(6, minmax(0, 1fr)); gap: 1px; padding: 12px 0 6px;">
+                <div></div>
+                <sc-for list="{{ courts }}" as="c" hint-placeholder-count="6">
+                  <div style="padding: 0 4px;">
+                    <div style="font-size: 12px; font-weight: 600;">{{ c.name }}</div>
+                    <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #8b918c;">{{ c.surface }}</div>
+                  </div>
+                </sc-for>
+              </div>
+              <sc-for list="{{ grid }}" as="row" hint-placeholder-count="8">
+                <div style="display: grid; grid-template-columns: 62px repeat(6, minmax(0, 1fr)); gap: 1px; border-top: 1px solid #eceee8;">
+                  <div style="padding: 10px 6px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #5d645f;">{{ row.hour }}</div>
+                  <sc-for list="{{ row.cells }}" as="cell" hint-placeholder-count="6">
+                    <button type="button" style="{{ cell.style }}" style-hover="{{ cell.hoverStyle }}">
+                      <span style="font-size: 11px; font-weight: 500; line-height: 1.3;">{{ cell.label }}</span>
+                      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 9px; letter-spacing: 0.06em; opacity: 0.8;">{{ cell.sub }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </section>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start;">
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Próximas reservas</h2>
+            </div>
+            <sc-for list="{{ bookings }}" as="b" hint-placeholder-count="5">
+              <div style="display: grid; grid-template-columns: 74px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 16px; border-bottom: 1px solid #eceee8;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #14181a;">{{ b.time }}</span>
+                <div style="min-width: 0;">
+                  <div style="font-size: 13px; font-weight: 500;">{{ b.who }}</div>
+                  <div style="font-size: 11px; color: #7c837e;">{{ b.where }}</div>
+                </div>
+                <span style="{{ b.chip }}">{{ b.status }}</span>
+              </div>
+            </sc-for>
+          </section>
+
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Nova reserva</h2>
+            </div>
+            <div style="padding: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Associado</span>
+                <input type="text" value="Marina Duarte — 0142" style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 13px;" />
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Quadra</span>
+                <select style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 13px;">
+                  <option>Q1 — Saibro</option>
+                  <option>Q4 — Rápida</option>
+                  <option>Areia 1 — Beach</option>
+                </select>
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Data</span>
+                <input type="date" value="2026-09-14" style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 13px;" />
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Horário</span>
+                <select style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 13px;">
+                  <option>19:00 — 20:00</option>
+                  <option>20:00 — 21:00</option>
+                </select>
+              </label>
+              <div style="grid-column: 1 / -1; padding: 11px 12px; border: 1px solid #e0e6dd; background: #f4f7f2; font-size: 12px; line-height: 1.55; color: #2c4a35;">Regra do clube: até 2 reservas ativas por associado e 1h por dia em horário de pico (18h–21h). Mensalidade em atraso bloqueia novas reservas.</div>
+              <button type="button" style="grid-column: 1 / -1; padding: 12px; border: 1px solid #12572f; background: #12572f; color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;" style-hover="grid-column: 1 / -1; padding: 12px; border: 1px solid #0b3d20; background: #0b3d20; color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;">Confirmar reserva</button>
+            </div>
+          </section>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isPartidas }}" hint-placeholder-val="{{ true }}">
+      <div style="display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; align-items: start;">
+        <section style="background: #fff; border: 1px solid #e2e5df;">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #e2e5df;">
+            <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Ranking — pontos corridos</h2>
+            <sc-for list="{{ rankFilters }}" as="f" hint-placeholder-count="3">
+              <button type="button" onClick="{{ f.go }}" style="{{ f.style }}">{{ f.label }}</button>
+            </sc-for>
+          </div>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr style="background: #f7f8f5; border-bottom: 1px solid #e2e5df;">
+                  <th style="padding: 9px 16px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">#</th>
+                  <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Jogador</th>
+                  <th style="padding: 9px 8px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Pontos</th>
+                  <th style="padding: 9px 8px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">J</th>
+                  <th style="padding: 9px 8px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">V–D</th>
+                  <th style="padding: 9px 8px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Aprov.</th>
+                  <th style="padding: 9px 8px; text-align: left; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Sequência</th>
+                  <th style="padding: 9px 16px; text-align: right; font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Var. pos.</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{ ranking }}" as="p" hint-placeholder-count="10">
+                  <tr style="{{ p.rowStyle }}">
+                    <td style="{{ p.cellMono }}">{{ p.pos }}</td>
+                    <td style="{{ p.cellName }}">{{ p.name }}<div style="font-size: 11px; font-weight: 400; color: #8b918c;">{{ p.cat }}</div></td>
+                    <td style="{{ p.cellMonoRight }}">{{ p.pts }}</td>
+                    <td style="{{ p.cellMonoRight }}">{{ p.played }}</td>
+                    <td style="{{ p.cellMonoRight }}">{{ p.wl }}</td>
+                    <td style="{{ p.cellMonoRight }}">{{ p.pct }}</td>
+                    <td style="{{ p.cell }}"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: #5d645f;">{{ p.streak }}</span></td>
+                    <td style="{{ p.cellActions }}"><span style="{{ p.varStyle }}">{{ p.varText }}</span></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Registrar partida</h2>
+            </div>
+            <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: grid; grid-template-columns: minmax(0, 1fr) 22px minmax(0, 1fr); gap: 10px; align-items: end; min-width: 0;">
+                <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Jogador A</span>
+                  <input type="text" value="Marina Duarte" style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 13px;" />
+                </label>
+                <span style="padding-bottom: 12px; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b918c;">vs</span>
+                <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Jogador B</span>
+                  <input type="text" value="Rafael Bueno" style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-size: 13px;" />
+                </label>
+              </div>
+              <label style="display: flex; flex-direction: column; gap: 6px; min-width: 0;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #7c837e;">Placar por set</span>
+                <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; min-width: 0;">
+                  <input type="text" value="6–4" style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: center;" />
+                  <input type="text" value="3–6" style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: center;" />
+                  <input type="text" value="7–5" style="width: 100%; min-width: 0; padding: 10px 11px; border: 1px solid #d9ddd6; background: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 13px; text-align: center;" />
+                </div>
+              </label>
+              <div style="padding: 10px 12px; background: #f7f8f5; border: 1px solid #eceee8; font-family: 'IBM Plex Mono', monospace; font-size: 11px; line-height: 1.6; color: #5d645f;">PRÉVIA — VITÓRIA +3 PTS · DERROTA +0 · W.O. +1<br />Duarte 54 → 57 pts (4º → 3º) · Bueno 72 pts (1º, mantém)</div>
+              <button type="button" style="padding: 12px; border: 1px solid #12572f; background: #12572f; color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;" style-hover="padding: 12px; border: 1px solid #0b3d20; background: #0b3d20; color: #fff; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;">Salvar resultado</button>
+            </div>
+          </section>
+
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Últimas partidas</h2>
+            </div>
+            <sc-for list="{{ matches }}" as="mt" hint-placeholder-count="6">
+              <div style="display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 16px; border-bottom: 1px solid #eceee8;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8b918c;">{{ mt.date }}</span>
+                <div style="min-width: 0;">
+                  <div style="font-size: 13px;"><strong style="font-weight: 600;">{{ mt.winner }}</strong> d. {{ mt.loser }}</div>
+                  <div style="font-size: 11px; color: #7c837e;">{{ mt.meta }}</div>
+                </div>
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #14181a;">{{ mt.score }}</span>
+              </div>
+            </sc-for>
+          </section>
+        </div>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ isSocio }}" hint-placeholder-val="{{ true }}">
+      <div style="display: flex; flex-direction: column; gap: 18px;">
+        <section style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 340px); gap: 1px; background: #e2e5df; border: 1px solid #e2e5df;">
+          <div style="background: #fff; padding: 18px; display: flex; gap: 16px; align-items: flex-start;">
+            <div style="width: 78px; height: 78px; flex: none; border: 1px dashed #cfd3cc; background: repeating-linear-gradient(115deg, #f4f5f2 0 7px, #eceee8 7px 14px); display: grid; place-items: center; text-align: center;">
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 8px; letter-spacing: 0.08em; color: #9aa09a;">foto 3x4</span>
+            </div>
+            <div style="min-width: 0; display: flex; flex-direction: column; gap: 8px;">
+              <div>
+                <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 22px;">Marina Duarte</h2>
+                <div style="margin-top: 3px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.08em; color: #7c837e;">MAT. 0142 · TITULAR · ASSOCIADA DESDE 03/2019</div>
+              </div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                <span style="padding: 4px 9px; border: 1px solid #cfe0d3; background: #eef4ee; font-size: 11px; color: #12572f;">Situação: ativa</span>
+                <span style="padding: 4px 9px; border: 1px solid #e2e5df; background: #f7f8f5; font-size: 11px; color: #5d645f;">Tênis</span>
+                <span style="padding: 4px 9px; border: 1px solid #e2e5df; background: #f7f8f5; font-size: 11px; color: #5d645f;">Beach tennis</span>
+                <span style="padding: 4px 9px; border: 1px solid #e2e5df; background: #f7f8f5; font-size: 11px; color: #5d645f;">Plano Família</span>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 2px;">
+                <button type="button" style="padding: 7px 12px; border: 1px solid #d9ddd6; background: #fff; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;" style-hover="padding: 7px 12px; border: 1px solid #12572f; background: #f4f7f2; color: #12572f; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;">Editar dados</button>
+                <button type="button" style="padding: 7px 12px; border: 1px solid #d9ddd6; background: #fff; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;" style-hover="padding: 7px 12px; border: 1px solid #12572f; background: #f4f7f2; color: #12572f; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;">Dependentes (2)</button>
+              </div>
+            </div>
+          </div>
+          <div style="background: #fff; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+            <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8b918c;">Minha temporada</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px;">54 pts</div><div style="font-size: 11px; color: #7c837e;">4º no ranking geral</div></div>
+              <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px;">18–7</div><div style="font-size: 11px; color: #7c837e;">vitórias–derrotas</div></div>
+              <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px;">31</div><div style="font-size: 11px; color: #7c837e;">horas de quadra</div></div>
+              <div><div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px;">2</div><div style="font-size: 11px; color: #7c837e;">reservas ativas</div></div>
+            </div>
+          </div>
+        </section>
+
+        <div style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 18px; align-items: start;">
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="display: flex; align-items: center; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Minhas mensalidades</h2>
+              <span style="margin-left: auto; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #7c837e;">plano família · R$ 420,00</span>
+            </div>
+            <table>
+              <tbody>
+                <sc-for list="{{ myFees }}" as="f" hint-placeholder-count="6">
+                  <tr style="border-bottom: 1px solid #eceee8;">
+                    <td style="padding: 11px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #5d645f;">{{ f.comp }}</td>
+                    <td style="padding: 11px 8px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #14181a; text-align: right;">{{ f.value }}</td>
+                    <td style="padding: 11px 8px; font-size: 12px; color: #7c837e;">{{ f.due }}</td>
+                    <td style="padding: 11px 8px;"><span style="{{ f.chip }}">{{ f.status }}</span></td>
+                    <td style="padding: 11px 16px 11px 8px; text-align: right; font-size: 12px;"><a href="#recibo">{{ f.action }}</a></td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+            <div style="padding: 12px 16px; background: #fdf8ee; border-top: 1px solid #f0e3ca; font-size: 12px; line-height: 1.55; color: #6b4d12;">A mensalidade de setembro vence em 20/09. Pague pelo Pix do sistema para baixa automática em até 2h.</div>
+          </section>
+
+          <section style="background: #fff; border: 1px solid #e2e5df;">
+            <div style="display: flex; align-items: center; padding: 13px 16px; border-bottom: 1px solid #e2e5df;">
+              <h2 style="margin: 0; font-family: 'Spectral', serif; font-weight: 600; font-size: 16px;">Minhas reservas</h2>
+              <a href="#quadras" onClick="{{ goQuadras }}" style="margin-left: auto; font-size: 12px;">reservar quadra</a>
+            </div>
+            <sc-for list="{{ myBookings }}" as="b" hint-placeholder-count="4">
+              <div style="display: grid; grid-template-columns: 78px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 16px; border-bottom: 1px solid #eceee8;">
+                <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px;">{{ b.when }}</span>
+                <div style="min-width: 0;">
+                  <div style="font-size: 13px; font-weight: 500;">{{ b.court }}</div>
+                  <div style="font-size: 11px; color: #7c837e;">{{ b.partner }}</div>
+                </div>
+                <span style="{{ b.chip }}">{{ b.status }}</span>
+              </div>
+            </sc-for>
+            <div style="padding: 14px 16px; display: flex; flex-direction: column; gap: 8px;">
+              <div style="font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: #8b918c;">Meus últimos resultados</div>
+              <sc-for list="{{ myMatches }}" as="mt" hint-placeholder-count="3">
+                <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: #3d443f;">
+                  <span style="{{ mt.badge }}">{{ mt.result }}</span>
+                  <span style="flex: 1; min-width: 0;">{{ mt.opponent }}</span>
+                  <span style="font-family: 'IBM Plex Mono', monospace; font-size: 11px;">{{ mt.score }}</span>
+                  <span style="{{ mt.varStyle }}">{{ mt.varText }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+        </div>
+      </div>
+      </sc-if>
+
+    </div>
+  </main>
+</div>
+</sc-if>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;clubName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Clube Atlético Aurora&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;densidade&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Compacta&quot;,&quot;Confortável&quot;],&quot;default&quot;:&quot;Compacta&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tabelas&quot;},&quot;estiloStatus&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Preenchido&quot;,&quot;Contorno&quot;],&quot;default&quot;:&quot;Preenchido&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Tabelas&quot;}}">
+const GREEN = '#12572f', INK = '#14181a', MUTED = '#7c837e';
+
+const chipFor = (status, variant) => {
+  const map = {
+    'pago': ['#12572f', '#eef4ee', '#cfe0d3'],
+    'ativo': ['#12572f', '#eef4ee', '#cfe0d3'],
+    'ativa': ['#12572f', '#eef4ee', '#cfe0d3'],
+    'confirmada': ['#12572f', '#eef4ee', '#cfe0d3'],
+    'pendente': ['#8a5a0b', '#fdf5e6', '#f0e3ca'],
+    'aguardando': ['#8a5a0b', '#fdf5e6', '#f0e3ca'],
+    'atrasado': ['#9c2230', '#fbeef0', '#f0d4d8'],
+    'inativo': ['#6b7370', '#f2f3f0', '#e2e5df'],
+    'suspenso': ['#9c2230', '#fbeef0', '#f0d4d8'],
+    'isento': ['#235f74', '#eef3f5', '#d3e0e5'],
+    'aula': ['#235f74', '#eef3f5', '#d3e0e5']
+  };
+  const [fg, bg, bd] = map[String(status).toLowerCase()] || ['#6b7370', '#f2f3f0', '#e2e5df'];
+  const base = 'display:inline-block;padding:3px 8px;font-size:11px;letter-spacing:0.02em;white-space:nowrap;';
+  return variant === 'contorno'
+    ? base + 'color:' + fg + ';background:transparent;border:1px solid ' + bd + ';'
+    : base + 'color:' + fg + ';background:' + bg + ';border:1px solid ' + bd + ';';
+};
+
+const varStyle = (n) => 'font-family:\'IBM Plex Mono\',monospace;font-size:11px;white-space:nowrap;color:' +
+  (n > 0 ? '#12572f' : n < 0 ? '#9c2230' : '#8b918c') + ';';
+const varText = (n) => (n > 0 ? '+' : n < 0 ? '−' : '±') + Math.abs(n);
+
+class Component extends DCLogic {
+  state = { screen: 'login', role: 'admin', memberFilter: 'Todos', feeFilter: 'Todos', rankFilter: 'Tênis · simples' };
+
+  go = (screen) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ screen }); };
+
+  pad(dense) {
+    return dense ? '9px' : '13px';
+  }
+
+  navFor(role) {
+    return role === 'admin'
+      ? [['dashboard', 'Painel geral', ''], ['associados', 'Associados', '412'], ['mensalidades', 'Mensalidades', '26'], ['quadras', 'Quadras', '7'], ['partidas', 'Partidas e ranking', ''], ['socio', 'Ver como associado', '']]
+      : [['socio', 'Minha área', ''], ['quadras', 'Reservar quadra', ''], ['partidas', 'Ranking', ''], ['dashboard', 'Painel do clube', '']];
+  }
+
+  titleFor(screen) {
+    return {
+      dashboard: ['Administração', 'Painel geral do clube', 'Lançar mensalidades'],
+      associados: ['Administração / Cadastros', 'Associados', 'Novo associado'],
+      mensalidades: ['Administração / Financeiro', 'Controle de mensalidades', 'Lançar competência'],
+      quadras: ['Operação / Reservas', 'Reserva de quadras', 'Nova reserva'],
+      partidas: ['Esportivo', 'Partidas e ranking', 'Registrar partida'],
+      socio: ['Área do associado', 'Marina Duarte', 'Reservar quadra']
+    }[screen] || ['', '', ''];
+  }
+
+  renderVals() {
+    const p = this.props;
+    const dense = (p.densidade ?? 'Compacta') === 'Compacta';
+    const chipVariant = p.estiloStatus ?? 'Preenchido';
+    const pad = dense ? '9px' : '13px';
+    const s = this.state;
+    const screen = s.screen;
+    const [crumb, pageTitle, primaryAction] = this.titleFor(screen);
+
+    const cell = 'padding:' + pad + ' 8px;font-size:13px;color:#3d443f;vertical-align:top;';
+    const cellMono = 'padding:' + pad + ' 8px ' + pad + ' 16px;font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:#5d645f;vertical-align:top;white-space:nowrap;';
+    const cellMonoRight = 'padding:' + pad + ' 8px;font-family:\'IBM Plex Mono\',monospace;font-size:13px;color:' + INK + ';text-align:right;vertical-align:top;white-space:nowrap;';
+    const cellName = 'padding:' + pad + ' 8px;font-size:13px;font-weight:600;color:' + INK + ';vertical-align:top;';
+    const cellActions = 'padding:' + pad + ' 16px ' + pad + ' 8px;font-size:12px;text-align:right;vertical-align:top;';
+    const rowStyle = 'border-bottom:1px solid #eceee8;';
+    const tableCells = { cell, cellMono, cellMonoRight, cellName, cellActions, rowStyle };
+
+    const navItems = this.navFor(s.role).map(([key, label, badge]) => {
+      const active = key === screen;
+      return {
+        label, badge, go: this.go(key),
+        marker: 'width:5px;height:5px;flex:none;background:' + (active ? '#d8e84f' : '#4a7a5a') + ';',
+        style: 'display:flex;align-items:center;gap:9px;width:100%;padding:9px 8px;border:none;text-align:left;cursor:pointer;font-size:13px;' +
+          (active ? 'background:#1c5231;color:#ffffff;font-weight:600;' : 'background:transparent;color:#bfd3c3;font-weight:400;')
+      };
+    });
+
+    const filterChips = (list, current, onPick) => list.map((label) => ({
+      label,
+      go: () => onPick(label),
+      style: 'padding:6px 11px;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;cursor:pointer;border:1px solid ' +
+        (label === current ? GREEN : '#d9ddd6') + ';background:' + (label === current ? GREEN : '#fff') + ';color:' + (label === current ? '#fff' : '#5d645f') + ';'
+    }));
+
+    const rawMembers = [
+      ['0142', 'Marina Duarte', 'marina.duarte@email.com', 'Titular', 'Tênis, Beach', '03/2019', 'R$ 420', 'Ativo'],
+      ['0187', 'Rafael Bueno', 'rbueno@email.com', 'Titular', 'Tênis', '08/2017', 'R$ 320', 'Ativo'],
+      ['0203', 'Camila Prado', 'camila.prado@email.com', 'Dependente', 'Vôlei', '01/2021', 'R$ 0', 'Isento'],
+      ['0219', 'Henrique Salles', 'h.salles@email.com', 'Titular', 'Beach, Futsal', '05/2015', 'R$ 420', 'Atrasado'],
+      ['0244', 'Lúcia Ferraz', 'lucia.f@email.com', 'Titular', 'Tênis', '11/2022', 'R$ 320', 'Ativo'],
+      ['0260', 'Otávio Menezes', 'otavio.m@email.com', 'Titular', 'Futsal', '02/2020', 'R$ 320', 'Inativo'],
+      ['0271', 'Bianca Rocha', 'bianca.rocha@email.com', 'Titular', 'Beach', '09/2023', 'R$ 320', 'Ativo'],
+      ['0288', 'Diego Amorim', 'diego.amorim@email.com', 'Dependente', 'Tênis', '04/2024', 'R$ 0', 'Ativo'],
+      ['0301', 'Sofia Nogueira', 'sofia.n@email.com', 'Titular', 'Vôlei, Beach', '07/2021', 'R$ 420', 'Pendente'],
+      ['0316', 'Paulo Tavares', 'p.tavares@email.com', 'Titular', 'Tênis, Futsal', '06/2018', 'R$ 420', 'Ativo']
+    ];
+    const members = rawMembers
+      .filter(([, , , cat, , , , st]) => s.memberFilter === 'Todos' || (s.memberFilter === 'Ativos' && st === 'Ativo') || (s.memberFilter === 'Inadimplentes' && (st === 'Atrasado' || st === 'Pendente')) || (s.memberFilter === 'Dependentes' && cat === 'Dependente'))
+      .map(([id, name, email, cat, sports, since, plan, status]) => ({
+        id, name, email, cat, sports, since, plan, status,
+        chip: chipFor(status, chipVariant), goSocio: this.go('socio'), ...tableCells
+      }));
+
+    const rawFees = [
+      ['0142', 'Marina Duarte', '20/09', 'R$ 420,00', 'Pix', 'Pendente', 'Cobrar'],
+      ['0187', 'Rafael Bueno', '10/09', 'R$ 320,00', 'Cartão rec.', 'Pago', 'Recibo'],
+      ['0219', 'Henrique Salles', '10/08', 'R$ 420,00', 'Boleto', 'Atrasado', 'Negociar'],
+      ['0244', 'Lúcia Ferraz', '10/09', 'R$ 320,00', 'Pix', 'Pago', 'Recibo'],
+      ['0260', 'Otávio Menezes', '10/09', 'R$ 320,00', '—', 'Atrasado', 'Negociar'],
+      ['0271', 'Bianca Rocha', '20/09', 'R$ 320,00', 'Pix', 'Pendente', 'Cobrar'],
+      ['0288', 'Diego Amorim', '10/09', 'R$ 0,00', 'Isento', 'Isento', 'Ver'],
+      ['0301', 'Sofia Nogueira', '20/09', 'R$ 420,00', 'Boleto', 'Pendente', 'Cobrar'],
+      ['0316', 'Paulo Tavares', '10/09', 'R$ 420,00', 'Cartão rec.', 'Pago', 'Recibo'],
+      ['0329', 'Renata Vilar', '10/09', 'R$ 320,00', 'Pix', 'Pago', 'Recibo']
+    ];
+    const fees = rawFees
+      .filter(([, , , , , st]) => s.feeFilter === 'Todos' || s.feeFilter.toLowerCase().startsWith(st.toLowerCase().slice(0, 4)))
+      .map(([id, name, due, value, method, status, action]) => ({
+        id, name, due, value, method, status, action,
+        chip: chipFor(status, chipVariant), ...tableCells
+      }));
+
+    const courts = [
+      { name: 'Q1', surface: 'saibro' }, { name: 'Q2', surface: 'saibro' }, { name: 'Q3', surface: 'rápida' },
+      { name: 'Q4', surface: 'rápida' }, { name: 'Areia 1', surface: 'beach' }, { name: 'Society', surface: 'grama sint.' }
+    ];
+    const hours = ['07:00', '09:00', '11:00', '13:00', '15:00', '17:00', '19:00', '21:00'];
+    const plan = {
+      '07:00': [['r', 'L. Ferraz'], ['f'], ['f'], ['r', 'P. Tavares'], ['f'], ['f']],
+      '09:00': [['a', 'Escolinha'], ['a', 'Escolinha'], ['f'], ['f'], ['r', 'B. Rocha'], ['f']],
+      '11:00': [['f'], ['m'], ['r', 'R. Bueno'], ['f'], ['f'], ['f']],
+      '13:00': [['f'], ['m'], ['f'], ['f'], ['r', 'S. Nogueira'], ['f']],
+      '15:00': [['f'], ['f'], ['a', 'Aula part.'], ['f'], ['f'], ['r', 'Time B']],
+      '17:00': [['r', 'M. Duarte'], ['f'], ['r', 'D. Amorim'], ['r', 'C. Prado'], ['a', 'Beach kids'], ['f']],
+      '19:00': [['r', 'M. Duarte'], ['r', 'H. Salles'], ['r', 'P. Tavares'], ['r', 'R. Bueno'], ['r', 'B. Rocha'], ['r', 'Society A']],
+      '21:00': [['r', 'L. Ferraz'], ['f'], ['r', 'O. Menezes'], ['f'], ['r', 'S. Nogueira'], ['r', 'Society B']]
+    };
+    const cellBox = 'display:flex;flex-direction:column;justify-content:center;gap:2px;width:100%;min-height:' + (dense ? '40px' : '52px') + ';padding:6px 8px;text-align:left;cursor:pointer;';
+    const grid = hours.map((hour) => ({
+      hour,
+      cells: plan[hour].map(([kind, who]) => {
+        if (kind === 'r') return { label: who, sub: 'RESERVADO', style: cellBox + 'border:1px solid ' + GREEN + ';background:' + GREEN + ';color:#fff;', hoverStyle: cellBox + 'border:1px solid #0b3d20;background:#0b3d20;color:#fff;' };
+        if (kind === 'a') return { label: who, sub: 'AULA', style: cellBox + 'border:1px solid #235f74;background:#235f74;color:#fff;', hoverStyle: cellBox + 'border:1px solid #17475a;background:#17475a;color:#fff;' };
+        if (kind === 'm') return { label: 'Manutenção', sub: 'BLOQUEADO', style: cellBox + 'border:1px solid #d4d7d0;background:#e8e9e4;color:#6b7370;cursor:not-allowed;', hoverStyle: cellBox + 'border:1px solid #d4d7d0;background:#e8e9e4;color:#6b7370;cursor:not-allowed;' };
+        return { label: 'Livre', sub: 'RESERVAR', style: cellBox + 'border:1px solid #e2e5df;background:#fff;color:#a6aba6;', hoverStyle: cellBox + 'border:1px solid ' + GREEN + ';background:#f4f7f2;color:' + GREEN + ';' };
+      })
+    }));
+
+    const ranking = [
+      ['1', 'Rafael Bueno', 'Titular · tênis', '72', '30', '24–6', '80%', 'V V V D V', 1],
+      ['2', 'Paulo Tavares', 'Titular · tênis', '63', '30', '21–9', '70%', 'V D V V V', 2],
+      ['3', 'Bianca Rocha', 'Titular · beach', '57', '27', '19–8', '70%', 'V V D V V', -1],
+      ['4', 'Marina Duarte', 'Titular · tênis', '54', '25', '18–7', '72%', 'V V V V D', 3],
+      ['5', 'Henrique Salles', 'Titular · beach', '48', '28', '16–12', '57%', 'D V D V V', 0],
+      ['6', 'Lúcia Ferraz', 'Titular · tênis', '42', '25', '14–11', '56%', 'V D D V V', -2],
+      ['7', 'Sofia Nogueira', 'Titular · beach', '36', '25', '12–13', '48%', 'D V V D D', 1],
+      ['8', 'Diego Amorim', 'Dependente · tênis', '30', '22', '10–12', '45%', 'V D V D D', 4],
+      ['9', 'Otávio Menezes', 'Titular · tênis', '24', '23', '8–15', '35%', 'D D V D D', -3],
+      ['10', 'Camila Prado', 'Dependente · beach', '21', '21', '7–14', '33%', 'D V D D V', 0]
+    ].map(([pos, name, cat, pts, played, wl, pct, streak, v]) => ({
+      pos, name, cat, pts, played, wl, pct, streak, varStyle: varStyle(v), varText: varText(v), ...tableCells
+    }));
+
+    return {
+      clubName: p.clubName ?? 'Clube Atlético Aurora',
+      isLogin: screen === 'login',
+      showApp: screen !== 'login',
+      loginEmail: 'marina.duarte@email.com',
+      tabAssociado: 'padding:11px;border:none;cursor:pointer;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;' +
+        (s.role === 'associado' ? 'background:' + GREEN + ';color:#fff;font-weight:600;' : 'background:#fff;color:#5d645f;'),
+      tabAdmin: 'padding:11px;border:none;border-left:1px solid #d9ddd6;cursor:pointer;font-size:12px;letter-spacing:0.1em;text-transform:uppercase;' +
+        (s.role === 'admin' ? 'background:' + GREEN + ';color:#fff;font-weight:600;' : 'background:#fff;color:#5d645f;'),
+      pickAssociado: () => this.setState({ role: 'associado' }),
+      pickAdmin: () => this.setState({ role: 'admin' }),
+      doLogin: () => this.setState({ screen: this.state.role === 'admin' ? 'dashboard' : 'socio' }),
+      doLogout: this.go('login'),
+      switchRole: () => this.setState((st) => ({ role: st.role === 'admin' ? 'associado' : 'admin', screen: st.role === 'admin' ? 'socio' : 'dashboard' })),
+      switchLabel: s.role === 'admin' ? 'Ver como associado' : 'Voltar ao admin',
+      userName: s.role === 'admin' ? 'Joana Vieira' : 'Marina Duarte',
+      userRoleLabel: s.role === 'admin' ? 'Secretaria · admin' : 'Associada titular · 0142',
+      navGroupLabel: s.role === 'admin' ? 'administração' : 'meu clube',
+      navItems, crumb, pageTitle, primaryAction,
+
+      isDashboard: screen === 'dashboard',
+      isAssociados: screen === 'associados',
+      isMensalidades: screen === 'mensalidades',
+      isQuadras: screen === 'quadras',
+      isPartidas: screen === 'partidas',
+      isSocio: screen === 'socio',
+
+      goMensalidades: this.go('mensalidades'),
+      goQuadras: this.go('quadras'),
+      goPartidas: this.go('partidas'),
+
+      kpis: [
+        ['ocupação média', '74%', 5, '+5 p.p.', '7 quadras · 14h/dia'],
+        ['ocupação no pico', '96%', 2, '19h–21h', 'fila de espera em 3 dias'],
+        ['reservas hoje', '38', 0, '2 canceladas', '31 confirmadas · 5 aulas'],
+        ['horas ociosas', '22h', -3, '−3h', 'concentradas entre 11h e 15h'],
+        ['associados ativos', '412', 4, '+7 no mês', 'de 438 cadastrados'],
+        ['em aberto', 'R$ 7,9k', -1, '26 títulos', '6,3% de inadimplência']
+      ].map(([label, value, d, delta, note]) => ({ label, value, delta, note, deltaStyle: varStyle(d) })),
+
+      courtUse: [
+        ['Q1 — saibro', 92], ['Q2 — saibro', 61], ['Q3 — rápida', 78],
+        ['Q4 — rápida', 70], ['Areia 1 — beach', 88], ['Society', 55]
+      ].map(([name, pct]) => ({ name, pct: pct + '%', barStyle: 'display:block;height:10px;width:' + pct + '%;background:' + (pct > 80 ? GREEN : '#5c8c6c') + ';' })),
+
+      revenueBars: [
+        ['ABR', 'R$ 112k', 148, 12], ['MAI', 'R$ 115k', 152, 10], ['JUN', 'R$ 109k', 140, 18],
+        ['JUL', 'R$ 117k', 150, 14], ['AGO', 'R$ 121k', 156, 9], ['SET', 'R$ 126k', 132, 22]
+      ].map(([month, total, paid, due]) => ({
+        month, total,
+        paidStyle: 'height:' + paid + 'px;background:' + GREEN + ';',
+        dueStyle: 'height:' + due + 'px;background:#e7c88a;'
+      })),
+
+      occupancy: [
+        ['07–09', 42], ['09–11', 58], ['13–15', 36], ['15–17', 51], ['17–19', 82], ['19–21', 96]
+      ].map(([slot, pct]) => ({ slot, pct: pct + '%', barStyle: 'display:block;height:12px;width:' + pct + '%;background:' + (pct > 80 ? GREEN : '#5c8c6c') + ';' })),
+
+      tasks: [
+        ['3 cadastros aguardando aprovação', 'enviados entre 11/09 e 13/09', 'Revisar', '#8a5a0b'],
+        ['Henrique Salles — 2 meses em atraso', 'reservas bloqueadas automaticamente', 'Negociar', '#9c2230'],
+        ['Q2 em manutenção até 16/09', 'reservas das 11h e 13h realocadas', 'Avisar', '#235f74'],
+        ['Fechamento de agosto sem conferência', 'pendente desde 05/09', 'Conferir', '#8b918c']
+      ].map(([title, meta, action, c]) => ({ title, meta, action, dotStyle: 'width:8px;height:8px;background:' + c + ';' })),
+
+      topRanking: ranking.slice(0, 5),
+      ranking,
+      rankFilters: filterChips(['Tênis · simples', 'Tênis · duplas', 'Beach tennis'], s.rankFilter, (v) => this.setState({ rankFilter: v })),
+      memberFilters: filterChips(['Todos', 'Ativos', 'Inadimplentes', 'Dependentes'], s.memberFilter, (v) => this.setState({ memberFilter: v })),
+      memberCountLabel: members.length + ' de 412 exibidos',
+      members,
+      feeFilters: filterChips(['Todos', 'Pagos', 'Pendentes', 'Atrasados'], s.feeFilter, (v) => this.setState({ feeFilter: v })),
+      fees,
+      feeStats: [
+        ['previsto no mês', 'R$ 126.400', '412 títulos lançados'],
+        ['recebido', 'R$ 118.500', '93,7% da carteira'],
+        ['em aberto', 'R$ 7.900', '26 títulos · 6,3%'],
+        ['atraso acima de 30d', 'R$ 3.240', '9 associados · ação da diretoria']
+      ].map(([label, value, note]) => ({ label, value, note })),
+
+      courts, grid,
+      bookings: [
+        ['17:00', 'Marina Duarte + 1', 'Q1 — saibro · tênis simples', 'Confirmada'],
+        ['17:00', 'Diego Amorim', 'Q3 — rápida · treino', 'Confirmada'],
+        ['19:00', 'Henrique Salles', 'Q2 — saibro · duplas', 'Aguardando'],
+        ['19:00', 'Society A (11)', 'Society — grama sintética', 'Confirmada'],
+        ['21:00', 'Otávio Menezes', 'Q3 — rápida', 'Suspenso']
+      ].map(([time, who, where, status]) => ({ time, who, where, status, chip: chipFor(status, chipVariant) })),
+
+      matches: [
+        ['13/09', 'R. Bueno', 'P. Tavares', 'Q1 · saibro · simples', '6–4 7–5'],
+        ['13/09', 'M. Duarte', 'L. Ferraz', 'Q4 · rápida · simples', '6–2 6–3'],
+        ['12/09', 'B. Rocha', 'S. Nogueira', 'Areia 1 · beach', '6–3 6–4'],
+        ['12/09', 'H. Salles', 'O. Menezes', 'Q2 · saibro · simples', '7–6 6–4'],
+        ['11/09', 'D. Amorim', 'C. Prado', 'Q3 · rápida · simples', '6–1 6–4'],
+        ['10/09', 'P. Tavares', 'H. Salles', 'Q1 · saibro · simples', '6–4 3–6 6–2']
+      ].map(([date, winner, loser, meta, score]) => ({ date, winner, loser, meta, score })),
+
+      myFees: [
+        ['SET/2026', 'R$ 420,00', 'vence 20/09', 'Pendente', 'Pagar'],
+        ['AGO/2026', 'R$ 420,00', 'pago 09/08', 'Pago', 'Recibo'],
+        ['JUL/2026', 'R$ 420,00', 'pago 10/07', 'Pago', 'Recibo'],
+        ['JUN/2026', 'R$ 420,00', 'pago 12/06', 'Pago', 'Recibo'],
+        ['MAI/2026', 'R$ 420,00', 'pago 10/05', 'Pago', 'Recibo'],
+        ['ABR/2026', 'R$ 420,00', 'pago 09/04', 'Pago', 'Recibo']
+      ].map(([comp, value, due, status, action]) => ({ comp, value, due, status, action, chip: chipFor(status, chipVariant) })),
+
+      myBookings: [
+        ['hoje 17h', 'Q1 — saibro', 'com Lúcia Ferraz', 'Confirmada'],
+        ['hoje 19h', 'Q1 — saibro', 'duplas · 3 convidados', 'Confirmada'],
+        ['16/09 07h', 'Areia 1 — beach', 'aguardando parceiro', 'Aguardando']
+      ].map(([when, court, partner, status]) => ({ when, court, partner, status, chip: chipFor(status, chipVariant) })),
+
+      myMatches: [
+        ['V', 'vs L. Ferraz', '6–2 6–3', 3],
+        ['V', 'vs S. Nogueira', '6–4 6–4', 3],
+        ['D', 'vs R. Bueno', '4–6 5–7', 0]
+      ].map(([result, opponent, score, v]) => ({
+        result, opponent, score, varStyle: varStyle(v), varText: (v > 0 ? '+' + v + ' pts' : '0 pts'),
+        badge: 'width:18px;height:18px;flex:none;display:grid;place-items:center;font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:#fff;background:' + (result === 'V' ? GREEN : '#9c2230') + ';'
+      }))
+    };
+  }
+}
+</script>
+</body>
+</html>
