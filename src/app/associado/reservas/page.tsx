@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { getCurrentProfile } from "@/lib/auth";
 import { ReservasClient } from "./ReservasClient";
 
 type Quadra = {
@@ -11,6 +12,13 @@ type Quadra = {
 
 export default async function ReservasPage() {
   const supabase = await createClient();
+  const profile = await getCurrentProfile();
+
+  // Admin chega aqui pelo link "Abrir agenda de reservas" em
+  // /admin/quadras; associado chega pelo card "Reservas" em /associado.
+  // O "Voltar" precisa respeitar de onde cada role realmente veio.
+  const backHref =
+    profile?.role === "admin" ? "/admin/quadras" : "/associado";
 
   const { data, error } = await supabase
     .from("quadras")
@@ -41,7 +49,7 @@ export default async function ReservasPage() {
         </div>
 
         <Link
-          href="/associado"
+          href={backHref}
           className="rounded border border-line px-3 py-2 text-sm text-ink-soft hover:bg-surface-alt"
         >
           Voltar
@@ -69,7 +77,7 @@ export default async function ReservasPage() {
           </p>
 
           <Link
-            href="/associado"
+            href={backHref}
             className="mt-4 inline-block text-sm text-ink underline"
           >
             Voltar para o início
