@@ -1,7 +1,15 @@
 import { createClient } from "@/lib/supabase/server";
 import { DashboardCard } from "./DashboardCard";
 
-type Linha = { associado_id: string; full_name: string; pontos: number };
+type Linha = {
+  associado_id: string;
+  nome: string;
+  partidas: number;
+  vitorias: number;
+  empates: number;
+  derrotas: number;
+  pontos: number;
+};
 
 export async function RankingCard() {
   const supabase = await createClient();
@@ -10,23 +18,25 @@ export async function RankingCard() {
   let erro = false;
 
   try {
-    const { data, error } = await supabase
-      .from("ranking")
-      .select("associado_id, full_name, pontos")
-      .order("pontos", { ascending: false })
-      .limit(3);
+    const { data, error } = await supabase.rpc("get_ranking");
 
-    if (error) throw error;
+    if (error) {
+      console.error("Erro ao carregar ranking:", error);
+      throw error;
+    }
 
-    top3 = data ?? [];
-  } catch {
+    top3 = (data ?? []).slice(0, 3);
+  } catch (error) {
+    console.error("Erro no RankingCard:", error);
     erro = true;
   }
 
   if (erro) {
     return (
       <DashboardCard title="Top 3 do ranking">
-        <p className="text-sm text-red-600">Não foi possível carregar.</p>
+        <p className="text-sm text-red-600">
+          Não foi possível carregar.
+        </p>
       </DashboardCard>
     );
   }
@@ -43,16 +53,19 @@ export async function RankingCard() {
 
   return (
     <DashboardCard title="Top 3 do ranking">
-      <ol className="space-y-1 text-sm">
+      <ol className="space-y-2 text-sm">
         {top3.map((r, i) => (
           <li
             key={r.associado_id}
-            className="flex justify-between text-zinc-700"
+            className="flex items-center justify-between text-zinc-700"
           >
             <span>
-              {i + 1}. {r.full_name}
+              {i + 1}. {r.nome}
             </span>
-            <span className="text-zinc-500">{r.pontos} pts</span>
+
+            <span className="font-medium text-zinc-600">
+              {r.pontos} pts
+            </span>
           </li>
         ))}
       </ol>
