@@ -33,15 +33,15 @@ export async function AssociadosCard() {
 
   return (
     <DashboardCard title="Associados">
-      <p className="text-3xl font-semibold text-zinc-900">
+      <p className="text-3xl font-semibold text-ink">
         {ativos + inativos}
       </p>
-      <p className="mt-1 text-sm text-zinc-600">
+      <p className="mt-1 text-sm text-ink-muted">
         {ativos} ativos · {inativos} inativos
       </p>
       <Link
         href="/admin/associados"
-        className="mt-3 inline-block text-sm text-zinc-600 underline"
+        className="mt-3 inline-block text-sm text-ink-muted underline"
       >
         Ver todos
       </Link>

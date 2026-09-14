@@ -19,17 +19,17 @@ export default async function NovoAssociadoPage({
         <div className="mb-4">
           <Link
             href="/admin/associados"
-            className="text-sm text-zinc-600 hover:text-zinc-900"
+            className="text-sm text-ink-muted hover:text-ink"
           >
             ← Voltar para associados
           </Link>
         </div>
 
-        <h1 className="text-3xl font-bold text-zinc-900">
+        <h1 className="text-3xl font-bold text-ink">
           Novo associado
         </h1>
 
-        <p className="mt-2 text-sm text-zinc-600">
+        <p className="mt-2 text-sm text-ink-muted">
           Cadastre um novo associado no clube.
         </p>
       </div>
@@ -48,12 +48,12 @@ export default async function NovoAssociadoPage({
 
       <form
         action={createAssociado.bind(null, redirectTo)}
-        className="space-y-6 rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm"
+        className="space-y-6 rounded-2xl border border-line-subtle bg-surface p-6 shadow-sm"
       >
         <div>
           <label
             htmlFor="full_name"
-            className="mb-2 block text-sm font-medium text-zinc-700"
+            className="mb-2 block text-sm font-medium text-ink-soft"
           >
             Nome completo
           </label>
@@ -64,14 +64,14 @@ export default async function NovoAssociadoPage({
             type="text"
             required
             placeholder="Digite o nome completo"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+            className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
           />
         </div>
 
         <div>
           <label
             htmlFor="email"
-            className="mb-2 block text-sm font-medium text-zinc-700"
+            className="mb-2 block text-sm font-medium text-ink-soft"
           >
             E-mail
           </label>
@@ -82,14 +82,14 @@ export default async function NovoAssociadoPage({
             type="email"
             required
             placeholder="exemplo@email.com"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+            className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
           />
         </div>
 
         <div>
           <label
             htmlFor="phone"
-            className="mb-2 block text-sm font-medium text-zinc-700"
+            className="mb-2 block text-sm font-medium text-ink-soft"
           >
             Telefone
           </label>
@@ -99,14 +99,14 @@ export default async function NovoAssociadoPage({
             name="phone"
             type="tel"
             placeholder="(12) 99999-9999"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+            className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
           />
         </div>
 
         <div>
           <label
             htmlFor="password"
-            className="mb-2 block text-sm font-medium text-zinc-700"
+            className="mb-2 block text-sm font-medium text-ink-soft"
           >
             Senha inicial
           </label>
@@ -118,25 +118,25 @@ export default async function NovoAssociadoPage({
             required
             minLength={6}
             placeholder="Mínimo de 6 caracteres"
-            className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+            className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
           />
 
-          <p className="mt-1 text-xs text-zinc-500">
+          <p className="mt-1 text-xs text-ink-muted">
             O associado poderá utilizar essa senha para entrar no sistema.
           </p>
         </div>
 
-        <div className="flex items-center justify-end gap-3 border-t border-zinc-100 pt-5">
+        <div className="flex items-center justify-end gap-3 border-t border-line-subtle pt-5">
           <Link
             href="/admin/associados"
-            className="rounded-lg border border-zinc-300 px-4 py-2.5 text-sm font-medium text-zinc-700 hover:bg-zinc-50"
+            className="rounded-lg border border-line px-4 py-2.5 text-sm font-medium text-ink-soft hover:bg-surface-alt"
           >
             Cancelar
           </Link>
 
           <button
             type="submit"
-            className="rounded-lg bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800"
+            className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white hover:bg-accent-hover"
           >
             Cadastrar associado
           </button>

@@ -31,13 +31,13 @@ export default async function AssociadosPage({
     <div className="mx-auto max-w-4xl px-4 py-10">
       {/* Cabeçalho */}
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900">
+        <h1 className="text-xl font-semibold text-ink">
           Associados
         </h1>
 
         <Link
           href="/admin"
-          className="text-sm text-zinc-600 underline"
+          className="text-sm text-ink-muted underline"
         >
           Voltar
         </Link>
@@ -50,12 +50,12 @@ export default async function AssociadosPage({
           name="q"
           defaultValue={q}
           placeholder="Buscar por nome..."
-          className="w-full max-w-xs rounded border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+          className="w-full max-w-xs rounded border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
         />
 
         <button
           type="submit"
-          className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
+          className="rounded bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           Buscar
         </button>
@@ -65,7 +65,7 @@ export default async function AssociadosPage({
       <div className="mb-6 flex justify-end">
         <Link
           href="/admin/associados/novo"
-          className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
+          className="rounded-lg bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           + Novo associado
         </Link>
@@ -87,16 +87,16 @@ export default async function AssociadosPage({
 
       {/* Nenhum associado */}
       {!error && associados?.length === 0 && (
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Nenhum associado encontrado.
         </p>
       )}
 
       {/* Lista de associados */}
       {!error && associados && associados.length > 0 && (
-        <div className="overflow-x-auto rounded border border-zinc-200 bg-white">
+        <div className="overflow-x-auto rounded border border-line-subtle bg-surface">
           <table className="w-full text-sm">
-            <thead className="border-b border-zinc-200 bg-zinc-50 text-left text-zinc-600">
+            <thead className="border-b border-line-subtle bg-surface-alt text-left text-ink-muted">
               <tr>
                 <th className="px-4 py-2 font-medium">
                   Nome
@@ -122,17 +122,17 @@ export default async function AssociadosPage({
               {associados.map((associado) => (
                 <tr
                   key={associado.id}
-                  className="border-b border-zinc-100 last:border-0"
+                  className="border-b border-line-subtle last:border-0"
                 >
-                  <td className="px-4 py-2 text-zinc-900">
+                  <td className="px-4 py-2 text-ink">
                     {associado.full_name}
                   </td>
 
-                  <td className="px-4 py-2 text-zinc-600">
+                  <td className="px-4 py-2 text-ink-muted">
                     {associado.phone ?? "—"}
                   </td>
 
-                  <td className="px-4 py-2 text-zinc-600">
+                  <td className="px-4 py-2 text-ink-muted">
                     {formatDateBR(associado.joined_at)}
                   </td>
 
@@ -147,7 +147,7 @@ export default async function AssociadosPage({
                   <td className="px-4 py-2">
                     <Link
                       href={`/admin/associados/${associado.id}`}
-                      className="text-xs text-zinc-600 underline"
+                      className="text-xs text-ink-muted underline"
                     >
                       Ver detalhes
                     </Link>

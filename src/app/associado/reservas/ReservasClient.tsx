@@ -216,8 +216,8 @@ export function ReservasClient({ quadras }: Props) {
   return (
     <div className="space-y-6">
       {/* SELEÇÃO */}
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
-        <h2 className="text-base font-semibold text-zinc-900">
+      <section className="rounded-lg border border-line-subtle bg-surface p-5 shadow-sm">
+        <h2 className="text-base font-semibold text-ink">
           Escolha a quadra
         </h2>
 
@@ -226,7 +226,7 @@ export function ReservasClient({ quadras }: Props) {
           <div className="flex flex-col gap-1">
             <label
               htmlFor="quadra"
-              className="text-sm text-zinc-600"
+              className="text-sm text-ink-muted"
             >
               Quadra
             </label>
@@ -237,7 +237,7 @@ export function ReservasClient({ quadras }: Props) {
               onChange={(event) =>
                 setQuadraId(Number(event.target.value))
               }
-              className="rounded border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+              className="rounded border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
             >
               {quadras.map((quadra) => (
                 <option
@@ -254,7 +254,7 @@ export function ReservasClient({ quadras }: Props) {
           <div className="flex flex-col gap-1">
             <label
               htmlFor="data"
-              className="text-sm text-zinc-600"
+              className="text-sm text-ink-muted"
             >
               Data
             </label>
@@ -269,7 +269,7 @@ export function ReservasClient({ quadras }: Props) {
                 setMensagem("");
                 setErro("");
               }}
-              className="rounded border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+              className="rounded border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
             />
           </div>
         </div>
@@ -277,17 +277,17 @@ export function ReservasClient({ quadras }: Props) {
 
       {/* INFORMAÇÕES DA QUADRA */}
       {quadraSelecionada && (
-        <section className="rounded-lg border border-zinc-200 bg-white p-5">
-          <h2 className="text-lg font-semibold text-zinc-900">
+        <section className="rounded-lg border border-line-subtle bg-surface p-5">
+          <h2 className="text-lg font-semibold text-ink">
             {quadraSelecionada.nome}
           </h2>
 
-          <p className="mt-1 text-sm text-zinc-500">
+          <p className="mt-1 text-sm text-ink-muted">
             {quadraSelecionada.tipo}
           </p>
 
           {quadraSelecionada.descricao && (
-            <p className="mt-2 text-sm text-zinc-600">
+            <p className="mt-2 text-sm text-ink-muted">
               {quadraSelecionada.descricao}
             </p>
           )}
@@ -312,20 +312,20 @@ export function ReservasClient({ quadras }: Props) {
       )}
 
       {/* HORÁRIOS */}
-      <section className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm">
+      <section className="rounded-lg border border-line-subtle bg-surface p-5 shadow-sm">
         <div className="mb-5">
-          <h2 className="text-base font-semibold text-zinc-900">
+          <h2 className="text-base font-semibold text-ink">
             Horários disponíveis
           </h2>
 
           {!data && (
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-ink-muted">
               Selecione uma data para visualizar os horários.
             </p>
           )}
 
           {data && diaSemana !== null && (
-            <p className="mt-1 text-sm text-zinc-500">
+            <p className="mt-1 text-sm text-ink-muted">
               {DIAS[diaSemana]} —{" "}
               {data.split("-").reverse().join("/")}
             </p>
@@ -333,12 +333,12 @@ export function ReservasClient({ quadras }: Props) {
         </div>
 
         {carregando ? (
-          <p className="text-sm text-zinc-500">
+          <p className="text-sm text-ink-muted">
             Carregando horários...
           </p>
         ) : data && horariosDoDia.length === 0 ? (
-          <div className="rounded border border-dashed border-zinc-300 p-6 text-center">
-            <p className="text-sm text-zinc-500">
+          <div className="rounded border border-dashed border-line p-6 text-center">
+            <p className="text-sm text-ink-muted">
               Nenhum horário disponível para esta data.
             </p>
           </div>
@@ -352,13 +352,13 @@ export function ReservasClient({ quadras }: Props) {
                   key={horario.id}
                   className={`rounded-lg border p-4 ${
                     reservado
-                      ? "border-zinc-200 bg-zinc-50"
-                      : "border-zinc-300 bg-white"
+                      ? "border-line-subtle bg-surface-alt"
+                      : "border-line bg-surface"
                   }`}
                 >
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <p className="font-medium text-zinc-900">
+                      <p className="font-medium text-ink">
                         {String(
                           horario.hora_inicio
                         ).slice(0, 5)}
@@ -368,7 +368,7 @@ export function ReservasClient({ quadras }: Props) {
                         ).slice(0, 5)}
                       </p>
 
-                      <p className="mt-1 text-xs text-zinc-500">
+                      <p className="mt-1 text-xs text-ink-muted">
                         {reservado
                           ? "Horário reservado"
                           : "Disponível"}
@@ -381,8 +381,8 @@ export function ReservasClient({ quadras }: Props) {
                       onClick={() => reservar(horario)}
                       className={`rounded px-3 py-2 text-xs font-medium ${
                         reservado
-                          ? "cursor-not-allowed bg-zinc-200 text-zinc-500"
-                          : "bg-zinc-900 text-white hover:bg-zinc-800"
+                          ? "cursor-not-allowed bg-surface-hover text-ink-muted"
+                          : "bg-accent text-white hover:bg-accent-hover"
                       }`}
                     >
                       {reservado

@@ -30,11 +30,11 @@ export default async function ReservasPage() {
     <main className="mx-auto max-w-5xl px-4 py-10">
       <div className="mb-8 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-900">
+          <h1 className="text-2xl font-semibold text-ink">
             Reservar quadra
           </h1>
 
-          <p className="mt-1 text-sm text-zinc-600">
+          <p className="mt-1 text-sm text-ink-muted">
             Escolha uma quadra, uma data e um horário disponível
             para realizar sua reserva.
           </p>
@@ -42,7 +42,7 @@ export default async function ReservasPage() {
 
         <Link
           href="/associado"
-          className="rounded border border-zinc-300 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+          className="rounded border border-line px-3 py-2 text-sm text-ink-soft hover:bg-surface-alt"
         >
           Voltar
         </Link>
@@ -63,14 +63,14 @@ export default async function ReservasPage() {
       )}
 
       {!error && quadras.length === 0 && (
-        <div className="rounded-lg border border-dashed border-zinc-300 p-8 text-center">
-          <p className="text-sm text-zinc-600">
+        <div className="rounded-lg border border-dashed border-line p-8 text-center">
+          <p className="text-sm text-ink-muted">
             Nenhuma quadra está cadastrada no momento.
           </p>
 
           <Link
             href="/associado"
-            className="mt-4 inline-block text-sm text-zinc-900 underline"
+            className="mt-4 inline-block text-sm text-ink underline"
           >
             Voltar para o início
           </Link>

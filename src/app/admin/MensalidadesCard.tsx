@@ -45,16 +45,16 @@ export async function MensalidadesCard() {
 
   return (
     <DashboardCard title="Mensalidades do mês">
-      <p className="text-sm text-zinc-600">
+      <p className="text-sm text-ink-muted">
         {pagas} pagas · {pendentes} pendentes · {atrasadas} atrasadas
       </p>
-      <p className="mt-2 text-2xl font-semibold text-zinc-900">
+      <p className="mt-2 text-2xl font-semibold text-ink">
         {formatBRL(valorEmAberto)}
       </p>
-      <p className="mt-1 text-sm text-zinc-600">em aberto</p>
+      <p className="mt-1 text-sm text-ink-muted">em aberto</p>
       <Link
         href="/admin/mensalidades"
-        className="mt-3 inline-block text-sm text-zinc-600 underline"
+        className="mt-3 inline-block text-sm text-ink-muted underline"
       >
         Ver todas
       </Link>

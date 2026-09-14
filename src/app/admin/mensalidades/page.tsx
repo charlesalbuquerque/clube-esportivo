@@ -47,8 +47,8 @@ export default async function MensalidadesPage({
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-zinc-900">Mensalidades</h1>
-        <Link href="/admin" className="text-sm text-zinc-600 underline">
+        <h1 className="text-xl font-semibold text-ink">Mensalidades</h1>
+        <Link href="/admin" className="text-sm text-ink-muted underline">
           Voltar
         </Link>
       </div>
@@ -66,7 +66,7 @@ export default async function MensalidadesPage({
         <select
           name="status"
           defaultValue={status}
-          className="rounded border border-zinc-300 px-2 py-1.5 text-sm"
+          className="rounded border border-line px-2 py-1.5 text-sm bg-surface text-ink"
         >
           <option value="">Todos os status</option>
           {STATUS_OPTIONS.map((s) => (
@@ -79,7 +79,7 @@ export default async function MensalidadesPage({
         <select
           name="associado"
           defaultValue={associado}
-          className="rounded border border-zinc-300 px-2 py-1.5 text-sm"
+          className="rounded border border-line px-2 py-1.5 text-sm bg-surface text-ink"
         >
           <option value="">Todos os associados</option>
           {(associados ?? []).map((a) => (
@@ -91,7 +91,7 @@ export default async function MensalidadesPage({
 
         <button
           type="submit"
-          className="rounded bg-zinc-900 px-4 py-1.5 text-sm font-medium text-white hover:bg-zinc-800"
+          className="rounded bg-accent px-4 py-1.5 text-sm font-medium text-white hover:bg-accent-hover"
         >
           Filtrar
         </button>
@@ -106,13 +106,13 @@ export default async function MensalidadesPage({
       )}
 
       {!error && mensalidades?.length === 0 && (
-        <p className="text-sm text-zinc-600">Nenhuma mensalidade encontrada.</p>
+        <p className="text-sm text-ink-muted">Nenhuma mensalidade encontrada.</p>
       )}
 
       {!error && mensalidades && mensalidades.length > 0 && (
-        <div className="overflow-x-auto rounded border border-zinc-200 bg-white">
+        <div className="overflow-x-auto rounded border border-line-subtle bg-surface">
           <table className="w-full text-sm">
-            <thead className="border-b border-zinc-200 bg-zinc-50 text-left text-zinc-600">
+            <thead className="border-b border-line-subtle bg-surface-alt text-left text-ink-muted">
               <tr>
                 <th className="px-4 py-2 font-medium">Associado</th>
                 <th className="px-4 py-2 font-medium">Mês</th>
@@ -123,14 +123,14 @@ export default async function MensalidadesPage({
             </thead>
             <tbody>
               {mensalidades.map((m) => (
-                <tr key={m.id} className="border-b border-zinc-100 last:border-0">
-                  <td className="px-4 py-2 text-zinc-900">
+                <tr key={m.id} className="border-b border-line-subtle last:border-0">
+                  <td className="px-4 py-2 text-ink">
                     {nomesPorId.get(m.associado_id) ?? "—"}
                   </td>
-                  <td className="px-4 py-2 text-zinc-600">
+                  <td className="px-4 py-2 text-ink-muted">
                     {formatMonthBR(m.referencia_mes)}
                   </td>
-                  <td className="px-4 py-2 text-zinc-600">{formatBRL(m.valor)}</td>
+                  <td className="px-4 py-2 text-ink-muted">{formatBRL(m.valor)}</td>
                   <td className="px-4 py-2">
                     <span
                       className={`rounded px-2 py-0.5 text-xs font-medium ${mensalidadeStatusClass(m.status)}`}

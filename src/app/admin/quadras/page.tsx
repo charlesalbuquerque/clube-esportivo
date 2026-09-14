@@ -59,11 +59,11 @@ export default async function QuadrasPage() {
       {/* CABEÇALHO */}
       <div className="mb-8 flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-semibold text-zinc-900">
+          <h1 className="text-2xl font-semibold text-ink">
             Quadras e disponibilidade
           </h1>
 
-          <p className="mt-1 text-sm text-zinc-600">
+          <p className="mt-1 text-sm text-ink-muted">
             Cadastre as quadras do clube e defina os horários
             disponíveis para reservas.
           </p>
@@ -71,7 +71,7 @@ export default async function QuadrasPage() {
 
         <Link
           href="/admin"
-          className="rounded border border-zinc-300 px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+          className="rounded border border-line px-3 py-2 text-sm text-ink-soft hover:bg-surface-alt"
         >
           Voltar
         </Link>
@@ -106,27 +106,27 @@ export default async function QuadrasPage() {
           return (
             <section
               key={quadra.id}
-              className="rounded-lg border border-zinc-200 bg-white p-5 shadow-sm"
+              className="rounded-lg border border-line-subtle bg-surface p-5 shadow-sm"
             >
               {/* INFORMAÇÕES DA QUADRA */}
               <div className="mb-5 flex items-start justify-between gap-4">
                 <div>
-                  <h2 className="text-lg font-semibold text-zinc-900">
+                  <h2 className="text-lg font-semibold text-ink">
                     {quadra.nome}
                   </h2>
 
-                  <p className="mt-1 text-sm text-zinc-500">
+                  <p className="mt-1 text-sm text-ink-muted">
                     Tipo: {quadra.tipo}
                   </p>
 
                   {quadra.descricao && (
-                    <p className="mt-2 text-sm text-zinc-600">
+                    <p className="mt-2 text-sm text-ink-muted">
                       {quadra.descricao}
                     </p>
                   )}
                 </div>
 
-                <span className="rounded-full bg-zinc-100 px-3 py-1 text-xs text-zinc-600">
+                <span className="rounded-full bg-surface-hover px-3 py-1 text-xs text-ink-muted">
                   {horariosDaQuadra.length}{" "}
                   {horariosDaQuadra.length === 1
                     ? "horário"
@@ -136,28 +136,28 @@ export default async function QuadrasPage() {
 
               {/* HORÁRIOS */}
               <div>
-                <h3 className="mb-3 text-sm font-semibold text-zinc-800">
+                <h3 className="mb-3 text-sm font-semibold text-ink">
                   Horários disponíveis
                 </h3>
 
                 {horariosDaQuadra.length === 0 ? (
-                  <p className="rounded border border-dashed border-zinc-300 p-4 text-sm text-zinc-500">
+                  <p className="rounded border border-dashed border-line p-4 text-sm text-ink-muted">
                     Nenhum horário foi cadastrado para esta
                     quadra.
                   </p>
                 ) : (
-                  <div className="overflow-hidden rounded border border-zinc-200">
+                  <div className="overflow-hidden rounded border border-line-subtle">
                     {horariosDaQuadra.map((horario) => (
                       <div
                         key={horario.id}
-                        className="flex items-center justify-between gap-4 border-b border-zinc-100 px-4 py-3 last:border-b-0"
+                        className="flex items-center justify-between gap-4 border-b border-line-subtle px-4 py-3 last:border-b-0"
                       >
                         <div>
-                          <p className="text-sm font-medium text-zinc-800">
+                          <p className="text-sm font-medium text-ink">
                             {DIAS[horario.dia_semana]}
                           </p>
 
-                          <p className="text-xs text-zinc-500">
+                          <p className="text-xs text-ink-muted">
                             {String(
                               horario.hora_inicio
                             ).slice(0, 5)}
@@ -173,7 +173,7 @@ export default async function QuadrasPage() {
                             className={`rounded-full px-2 py-1 text-xs ${
                               horario.ativo
                                 ? "bg-green-100 text-green-700"
-                                : "bg-zinc-100 text-zinc-500"
+                                : "bg-surface-hover text-ink-muted"
                             }`}
                           >
                             {horario.ativo
@@ -204,7 +204,7 @@ export default async function QuadrasPage() {
               </div>
 
               {/* ADICIONAR HORÁRIO */}
-              <div className="mt-5 border-t border-zinc-200 pt-5">
+              <div className="mt-5 border-t border-line-subtle pt-5">
                 <NovoHorarioForm
                   quadraId={quadra.id}
                   redirectTo={redirectTo}
@@ -217,12 +217,12 @@ export default async function QuadrasPage() {
 
       {/* NENHUMA QUADRA */}
       {(quadras ?? []).length === 0 && !quadrasError && (
-        <div className="rounded-lg border border-dashed border-zinc-300 p-8 text-center">
-          <p className="text-sm text-zinc-500">
+        <div className="rounded-lg border border-dashed border-line p-8 text-center">
+          <p className="text-sm text-ink-muted">
             Nenhuma quadra cadastrada ainda.
           </p>
 
-          <p className="mt-1 text-xs text-zinc-400">
+          <p className="mt-1 text-xs text-ink-muted">
             Use o formulário acima para cadastrar a primeira
             quadra.
           </p>
@@ -233,7 +233,7 @@ export default async function QuadrasPage() {
       <div className="mt-8 flex justify-end">
         <Link
           href="/associado/reservas"
-          className="rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
+          className="rounded bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
         >
           Abrir agenda de reservas
         </Link>

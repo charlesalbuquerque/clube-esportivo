@@ -12,23 +12,23 @@ export default async function PerfilPage() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-10">
-      <Link href="/associado" className="text-sm text-zinc-600 underline">
+      <Link href="/associado" className="text-sm text-ink-muted underline">
         ← Voltar
       </Link>
 
-      <div className="mt-4 rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-        <h1 className="mb-4 text-xl font-semibold text-zinc-900">
+      <div className="mt-4 rounded-lg border border-line-subtle bg-surface p-6 shadow-sm">
+        <h1 className="mb-4 text-xl font-semibold text-ink">
           Meu perfil
         </h1>
 
         <dl className="mb-6 space-y-2 text-sm">
           <div className="flex justify-between">
-            <dt className="text-zinc-500">Status</dt>
-            <dd className="text-zinc-900">{profile.status}</dd>
+            <dt className="text-ink-muted">Status</dt>
+            <dd className="text-ink">{profile.status}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-zinc-500">Associado desde</dt>
-            <dd className="text-zinc-900">
+            <dt className="text-ink-muted">Associado desde</dt>
+            <dd className="text-ink">
               {formatDateBR(profile.joined_at)}
             </dd>
           </div>

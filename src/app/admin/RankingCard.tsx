@@ -44,7 +44,7 @@ export async function RankingCard() {
   if (top3.length === 0) {
     return (
       <DashboardCard title="Top 3 do ranking">
-        <p className="text-sm text-zinc-600">
+        <p className="text-sm text-ink-muted">
           Nenhuma partida registrada ainda.
         </p>
       </DashboardCard>
@@ -57,13 +57,13 @@ export async function RankingCard() {
         {top3.map((r, i) => (
           <li
             key={r.associado_id}
-            className="flex items-center justify-between text-zinc-700"
+            className="flex items-center justify-between text-ink-soft"
           >
             <span>
               {i + 1}. {r.nome}
             </span>
 
-            <span className="font-medium text-zinc-600">
+            <span className="font-medium text-ink-muted">
               {r.pontos} pts
             </span>
           </li>

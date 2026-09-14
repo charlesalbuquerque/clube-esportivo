@@ -44,23 +44,23 @@ export async function QuadrasReservasCard() {
   return (
     <Link href="/admin/quadras" className="block">
       <DashboardCard title="Quadras e reservas">
-        <p className="text-3xl font-semibold text-zinc-900">
+        <p className="text-3xl font-semibold text-ink">
           {totalQuadras ?? "—"}
         </p>
 
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-ink-muted">
           quadras cadastradas
         </p>
 
-        <p className="mt-3 text-3xl font-semibold text-zinc-900">
+        <p className="mt-3 text-3xl font-semibold text-ink">
           {reservasHoje ?? "—"}
         </p>
 
-        <p className="mt-1 text-sm text-zinc-600">
+        <p className="mt-1 text-sm text-ink-muted">
           reservas confirmadas hoje
         </p>
 
-        <p className="mt-4 text-xs font-medium text-zinc-500">
+        <p className="mt-4 text-xs font-medium text-ink-muted">
           Clique para gerenciar →
         </p>
       </DashboardCard>

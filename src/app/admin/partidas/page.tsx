@@ -35,17 +35,17 @@ export default async function PartidasPage({
         <div className="mb-4">
           <Link
             href="/admin"
-            className="text-sm text-zinc-600 hover:text-zinc-900"
+            className="text-sm text-ink-muted hover:text-ink"
           >
             ← Voltar para o painel
           </Link>
         </div>
 
-        <h1 className="text-3xl font-bold text-zinc-900">
+        <h1 className="text-3xl font-bold text-ink">
           Registrar partida
         </h1>
 
-        <p className="mt-2 text-sm text-zinc-600">
+        <p className="mt-2 text-sm text-ink-muted">
           Registre o resultado de uma partida individual ou em equipe.
         </p>
       </div>
@@ -58,7 +58,7 @@ export default async function PartidasPage({
       )}
 
       {/* FORMULÁRIO */}
-      <div className="rounded-2xl border border-zinc-200 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl border border-line-subtle bg-surface p-6 shadow-sm">
         <form
           action={createPartida.bind(null, redirectTo)}
           className="space-y-6"
@@ -67,7 +67,7 @@ export default async function PartidasPage({
           <div>
             <label
               htmlFor="tipo"
-              className="mb-2 block text-sm font-medium text-zinc-700"
+              className="mb-2 block text-sm font-medium text-ink-soft"
             >
               Tipo de partida
             </label>
@@ -76,7 +76,7 @@ export default async function PartidasPage({
               id="tipo"
               name="tipo"
               required
-              className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+              className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
             >
               <option value="individual">
                 Individual
@@ -92,7 +92,7 @@ export default async function PartidasPage({
           <div>
             <label
               htmlFor="data"
-              className="mb-2 block text-sm font-medium text-zinc-700"
+              className="mb-2 block text-sm font-medium text-ink-soft"
             >
               Data
             </label>
@@ -102,7 +102,7 @@ export default async function PartidasPage({
               name="data"
               type="date"
               required
-              className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+              className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
             />
           </div>
 
@@ -110,7 +110,7 @@ export default async function PartidasPage({
           <div>
             <label
               htmlFor="quadra_id"
-              className="mb-2 block text-sm font-medium text-zinc-700"
+              className="mb-2 block text-sm font-medium text-ink-soft"
             >
               Quadra
             </label>
@@ -118,7 +118,7 @@ export default async function PartidasPage({
             <select
               id="quadra_id"
               name="quadra_id"
-              className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+              className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
             >
               <option value="">
                 Nenhuma quadra
@@ -136,8 +136,8 @@ export default async function PartidasPage({
           </div>
 
           {/* PARTIDA INDIVIDUAL */}
-          <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
-            <h2 className="mb-4 text-sm font-semibold text-zinc-900">
+          <div className="rounded-xl border border-line-subtle bg-surface-alt p-4">
+            <h2 className="mb-4 text-sm font-semibold text-ink">
               Partida individual
             </h2>
 
@@ -146,7 +146,7 @@ export default async function PartidasPage({
               <div>
                 <label
                   htmlFor="jogador1_id"
-                  className="mb-2 block text-sm font-medium text-zinc-700"
+                  className="mb-2 block text-sm font-medium text-ink-soft"
                 >
                   Jogador 1
                 </label>
@@ -154,7 +154,7 @@ export default async function PartidasPage({
                 <select
                   id="jogador1_id"
                   name="jogador1_id"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-500"
+                  className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm outline-none focus:border-focus"
                 >
                   <option value="">
                     Selecione
@@ -175,7 +175,7 @@ export default async function PartidasPage({
               <div>
                 <label
                   htmlFor="jogador2_id"
-                  className="mb-2 block text-sm font-medium text-zinc-700"
+                  className="mb-2 block text-sm font-medium text-ink-soft"
                 >
                   Jogador 2
                 </label>
@@ -183,7 +183,7 @@ export default async function PartidasPage({
                 <select
                   id="jogador2_id"
                   name="jogador2_id"
-                  className="w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm outline-none focus:border-zinc-500"
+                  className="w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm outline-none focus:border-focus"
                 >
                   <option value="">
                     Selecione
@@ -208,8 +208,8 @@ export default async function PartidasPage({
           />
 
           {/* PLACAR */}
-          <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
-            <h2 className="mb-4 text-sm font-semibold text-zinc-900">
+          <div className="rounded-xl border border-line-subtle bg-surface-alt p-4">
+            <h2 className="mb-4 text-sm font-semibold text-ink">
               Resultado
             </h2>
 
@@ -218,7 +218,7 @@ export default async function PartidasPage({
               <div>
                 <label
                   htmlFor="placar1"
-                  className="mb-2 block text-sm font-medium text-zinc-700"
+                  className="mb-2 block text-sm font-medium text-ink-soft"
                 >
                   Placar lado A / jogador 1
                 </label>
@@ -230,7 +230,7 @@ export default async function PartidasPage({
                   min="0"
                   required
                   defaultValue="0"
-                  className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+                  className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
                 />
               </div>
 
@@ -238,7 +238,7 @@ export default async function PartidasPage({
               <div>
                 <label
                   htmlFor="placar2"
-                  className="mb-2 block text-sm font-medium text-zinc-700"
+                  className="mb-2 block text-sm font-medium text-ink-soft"
                 >
                   Placar lado B / jogador 2
                 </label>
@@ -250,17 +250,17 @@ export default async function PartidasPage({
                   min="0"
                   required
                   defaultValue="0"
-                  className="w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+                  className="w-full rounded-lg border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
                 />
               </div>
             </div>
           </div>
 
           {/* BOTÃO */}
-          <div className="flex justify-end border-t border-zinc-100 pt-5">
+          <div className="flex justify-end border-t border-line-subtle pt-5">
             <button
               type="submit"
-              className="rounded-lg bg-zinc-900 px-5 py-2.5 text-sm font-medium text-white hover:bg-zinc-800"
+              className="rounded-lg bg-accent px-5 py-2.5 text-sm font-medium text-white hover:bg-accent-hover"
             >
               Registrar partida
             </button>

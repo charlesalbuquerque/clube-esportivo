@@ -15,7 +15,7 @@ export function PerfilForm({
   return (
     <form action={action} className="flex flex-col gap-4">
       <div className="flex flex-col gap-1">
-        <label htmlFor="full_name" className="text-sm font-medium text-zinc-700">
+        <label htmlFor="full_name" className="text-sm font-medium text-ink-soft">
           Nome
         </label>
         <input
@@ -24,12 +24,12 @@ export function PerfilForm({
           type="text"
           defaultValue={fullName}
           required
-          className="rounded border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+          className="rounded border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
         />
       </div>
 
       <div className="flex flex-col gap-1">
-        <label htmlFor="phone" className="text-sm font-medium text-zinc-700">
+        <label htmlFor="phone" className="text-sm font-medium text-ink-soft">
           Telefone
         </label>
         <input
@@ -37,7 +37,7 @@ export function PerfilForm({
           name="phone"
           type="tel"
           defaultValue={phone}
-          className="rounded border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-zinc-500"
+          className="rounded border border-line px-3 py-2 text-sm outline-none focus:border-focus bg-surface text-ink"
         />
       </div>
 
@@ -49,7 +49,7 @@ export function PerfilForm({
       <button
         type="submit"
         disabled={pending}
-        className="mt-2 rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-50"
+        className="mt-2 rounded bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover disabled:opacity-50"
       >
         {pending ? "Salvando..." : "Salvar"}
       </button>

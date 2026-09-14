@@ -13,7 +13,7 @@ export function MarcarPagaButton({
     <form action={action}>
       <button
         type="submit"
-        className="rounded border border-zinc-300 px-2 py-1 text-xs hover:bg-zinc-100"
+        className="rounded border border-line px-2 py-1 text-xs text-ink-soft hover:bg-surface-hover"
       >
         Marcar como paga
       </button>

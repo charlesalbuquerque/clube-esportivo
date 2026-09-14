@@ -16,9 +16,9 @@ export function NovoHorarioForm({
   return (
     <form
       action={action}
-      className="rounded border border-zinc-200 bg-white p-4"
+      className="rounded border border-line-subtle bg-surface p-4"
     >
-      <h3 className="mb-4 text-sm font-semibold text-zinc-900">
+      <h3 className="mb-4 text-sm font-semibold text-ink">
         Adicionar horário disponível
       </h3>
 
@@ -26,7 +26,7 @@ export function NovoHorarioForm({
         <div className="flex flex-col gap-1">
           <label
             htmlFor={`dia_semana_${quadraId}`}
-            className="text-xs text-zinc-600"
+            className="text-xs text-ink-muted"
           >
             Dia da semana
           </label>
@@ -36,7 +36,7 @@ export function NovoHorarioForm({
             name="dia_semana"
             required
             defaultValue=""
-            className="rounded border border-zinc-300 px-3 py-2 text-sm"
+            className="rounded border border-line px-3 py-2 text-sm bg-surface text-ink"
           >
             <option value="" disabled>
               Selecione...
@@ -55,7 +55,7 @@ export function NovoHorarioForm({
         <div className="flex flex-col gap-1">
           <label
             htmlFor={`hora_inicio_${quadraId}`}
-            className="text-xs text-zinc-600"
+            className="text-xs text-ink-muted"
           >
             Horário inicial
           </label>
@@ -65,14 +65,14 @@ export function NovoHorarioForm({
             name="hora_inicio"
             type="time"
             required
-            className="rounded border border-zinc-300 px-3 py-2 text-sm"
+            className="rounded border border-line px-3 py-2 text-sm bg-surface text-ink"
           />
         </div>
 
         <div className="flex flex-col gap-1">
           <label
             htmlFor={`hora_fim_${quadraId}`}
-            className="text-xs text-zinc-600"
+            className="text-xs text-ink-muted"
           >
             Horário final
           </label>
@@ -82,14 +82,14 @@ export function NovoHorarioForm({
             name="hora_fim"
             type="time"
             required
-            className="rounded border border-zinc-300 px-3 py-2 text-sm"
+            className="rounded border border-line px-3 py-2 text-sm bg-surface text-ink"
           />
         </div>
       </div>
 
       <button
         type="submit"
-        className="mt-4 rounded bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
+        className="mt-4 rounded bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover"
       >
         Adicionar horário
       </button>

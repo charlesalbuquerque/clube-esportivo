@@ -59,12 +59,12 @@ export default function EquipePartidaForm({
   }
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
-      <h2 className="mb-1 text-sm font-semibold text-zinc-900">
+    <div className="rounded-xl border border-line-subtle bg-surface-alt p-4">
+      <h2 className="mb-1 text-sm font-semibold text-ink">
         Partida em equipe
       </h2>
 
-      <p className="mb-4 text-xs text-zinc-500">
+      <p className="mb-4 text-xs text-ink-muted">
         Selecione os associados que fazem parte de cada equipe.
       </p>
 
@@ -77,7 +77,7 @@ export default function EquipePartidaForm({
       <div className="grid gap-6 md:grid-cols-2">
         {/* EQUIPE A */}
         <div>
-          <h3 className="mb-3 text-sm font-medium text-zinc-700">
+          <h3 className="mb-3 text-sm font-medium text-ink-soft">
             Equipe A
           </h3>
 
@@ -88,7 +88,7 @@ export default function EquipePartidaForm({
               return (
                 <label
                   key={associado.id}
-                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm hover:bg-zinc-50"
+                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-line-subtle bg-surface px-3 py-2 text-sm hover:bg-surface-alt"
                 >
                   <input
                     type="checkbox"
@@ -107,14 +107,14 @@ export default function EquipePartidaForm({
             })}
           </div>
 
-          <p className="mt-3 text-xs text-zinc-500">
+          <p className="mt-3 text-xs text-ink-muted">
             {ladoA.length} participante(s)
           </p>
         </div>
 
         {/* EQUIPE B */}
         <div>
-          <h3 className="mb-3 text-sm font-medium text-zinc-700">
+          <h3 className="mb-3 text-sm font-medium text-ink-soft">
             Equipe B
           </h3>
 
@@ -125,7 +125,7 @@ export default function EquipePartidaForm({
               return (
                 <label
                   key={associado.id}
-                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-zinc-200 bg-white px-3 py-2 text-sm hover:bg-zinc-50"
+                  className="flex cursor-pointer items-center gap-3 rounded-lg border border-line-subtle bg-surface px-3 py-2 text-sm hover:bg-surface-alt"
                 >
                   <input
                     type="checkbox"
@@ -144,7 +144,7 @@ export default function EquipePartidaForm({
             })}
           </div>
 
-          <p className="mt-3 text-xs text-zinc-500">
+          <p className="mt-3 text-xs text-ink-muted">
             {ladoB.length} participante(s)
           </p>
         </div>

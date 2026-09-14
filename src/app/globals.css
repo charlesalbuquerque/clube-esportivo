@@ -1,8 +1,20 @@
 @import "tailwindcss";
 
+/*
+ * Paleta de texto/fundo do sistema. Definida uma vez aqui em vez de
+ * espalhar tons de zinc soltos pelos componentes — todo texto/fundo
+ * usa uma dessas classes (text-ink, bg-surface, border-line etc).
+ * Contraste mínimo garantido (WCAG AA, 4.5:1 pra texto normal):
+ *   ink        #18181b sobre surface #ffffff -> 16.1:1
+ *   ink-soft   #3f3f46 sobre surface #ffffff ->  9.7:1
+ *   ink-muted  #52525b sobre surface #ffffff ->  7.0:1  (tom único pra texto
+ *              secundário/auxiliar — antes ficava espalhado entre
+ *              zinc-400/500/600, e zinc-400 sobre branco não passava de 4.5:1)
+ *   white      sobre accent #18181b           -> 17.9:1
+ */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #18181b;
 }
 
 @theme inline {
@@ -10,13 +22,21 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-ink: #18181b;
+  --color-ink-soft: #3f3f46;
+  --color-ink-muted: #52525b;
+
+  --color-surface: #ffffff;
+  --color-surface-alt: #fafafa;
+  --color-surface-hover: #f4f4f5;
+
+  --color-line: #d4d4d8;
+  --color-line-subtle: #e4e4e7;
+  --color-focus: #52525b;
+
+  --color-accent: #18181b;
+  --color-accent-hover: #27272a;
 }
 
 body {

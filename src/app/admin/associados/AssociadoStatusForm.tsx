@@ -16,14 +16,14 @@ export function AssociadoStatusForm({
       <select
         name="status"
         defaultValue={status}
-        className="rounded border border-zinc-300 px-2 py-1 text-xs"
+        className="rounded border border-line px-2 py-1 text-xs bg-surface text-ink"
       >
         <option value="ativo">ativo</option>
         <option value="inativo">inativo</option>
       </select>
       <button
         type="submit"
-        className="rounded border border-zinc-300 px-2 py-1 text-xs hover:bg-zinc-100"
+        className="rounded border border-line px-2 py-1 text-xs text-ink-soft hover:bg-surface-hover"
       >
         Salvar
       </button>

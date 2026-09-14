@@ -55,12 +55,12 @@ export default function EquipeSelector({
   ];
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-4">
-      <h2 className="mb-1 text-sm font-semibold text-zinc-900">
+    <div className="rounded-xl border border-line-subtle bg-surface-alt p-4">
+      <h2 className="mb-1 text-sm font-semibold text-ink">
         Participantes das equipes
       </h2>
 
-      <p className="mb-5 text-xs text-zinc-500">
+      <p className="mb-5 text-xs text-ink-muted">
         Selecione cada associado e escolha em qual equipe ele irá jogar.
       </p>
 
@@ -74,7 +74,7 @@ export default function EquipeSelector({
       <div className="grid gap-6 md:grid-cols-2">
         {/* EQUIPE A */}
         <div>
-          <h3 className="mb-3 text-sm font-semibold text-zinc-800">
+          <h3 className="mb-3 text-sm font-semibold text-ink">
             Equipe A
           </h3>
 
@@ -87,8 +87,8 @@ export default function EquipeSelector({
                   key={associado.id}
                   className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 text-sm transition ${
                     selecionado
-                      ? "border-zinc-900 bg-zinc-100"
-                      : "border-zinc-200 bg-white hover:bg-zinc-50"
+                      ? "border-accent bg-surface-hover"
+                      : "border-line-subtle bg-surface hover:bg-surface-alt"
                   }`}
                 >
                   <input
@@ -108,14 +108,14 @@ export default function EquipeSelector({
             })}
           </div>
 
-          <p className="mt-3 text-xs text-zinc-500">
+          <p className="mt-3 text-xs text-ink-muted">
             {ladoA.length} participante(s)
           </p>
         </div>
 
         {/* EQUIPE B */}
         <div>
-          <h3 className="mb-3 text-sm font-semibold text-zinc-800">
+          <h3 className="mb-3 text-sm font-semibold text-ink">
             Equipe B
           </h3>
 
@@ -128,8 +128,8 @@ export default function EquipeSelector({
                   key={associado.id}
                   className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 text-sm transition ${
                     selecionado
-                      ? "border-zinc-900 bg-zinc-100"
-                      : "border-zinc-200 bg-white hover:bg-zinc-50"
+                      ? "border-accent bg-surface-hover"
+                      : "border-line-subtle bg-surface hover:bg-surface-alt"
                   }`}
                 >
                   <input
@@ -149,7 +149,7 @@ export default function EquipeSelector({
             })}
           </div>
 
-          <p className="mt-3 text-xs text-zinc-500">
+          <p className="mt-3 text-xs text-ink-muted">
             {ladoB.length} participante(s)
           </p>
         </div>
