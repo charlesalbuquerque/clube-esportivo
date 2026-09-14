@@ -48,7 +48,7 @@ export default async function MensalidadesPage({
     <div className="mx-auto max-w-4xl px-4 py-10">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-xl font-semibold text-zinc-900">Mensalidades</h1>
-        <Link href="/associado" className="text-sm text-zinc-600 underline">
+        <Link href="/admin" className="text-sm text-zinc-600 underline">
           Voltar
         </Link>
       </div>

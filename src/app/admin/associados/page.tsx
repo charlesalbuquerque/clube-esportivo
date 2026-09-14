@@ -36,7 +36,7 @@ export default async function AssociadosPage({
         </h1>
 
         <Link
-          href="/associado"
+          href="/admin"
           className="text-sm text-zinc-600 underline"
         >
           Voltar
