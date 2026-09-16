@@ -12,16 +12,17 @@ Projeto de extensão universitária (UNIVAP) — MVP com entrega em 19/09/2026.
 
 ## Banco de dados
 
-Schema já criado no Supabase (ver `schema.sql` na raiz do projeto). Tabelas:
+Schema já criado no Supabase (ver `schema.sql` na raiz do projeto, mais as migrações numeradas `migration_00N_*.sql` que ainda não foram fundidas nele). Tabelas:
 
-- `profiles` — unifica admin e associado (id = mesmo id do Supabase Auth)
+- `profiles` — unifica admin e associado (id = mesmo id do Supabase Auth); matrícula, categoria, plano e modalidades praticadas vêm da `migration_002`
 - `mensalidades` — vinculada a `profiles.id`, status: pago/pendente/atrasado
 - `quadras` — cadastro de quadras
+- `quadra_horarios` — grade de horários disponíveis por quadra (dia da semana + hora_inicio/hora_fim)
 - `reservas` — vinculada a `quadras` e `profiles`, com unique(quadra_id, data, hora_inicio) pra impedir conflito de horário
-- `partidas` — jogador1, jogador2, placar, tipo (individual/equipe); `partida_participantes` guarda os demais jogadores das partidas em equipe
-- `get_ranking()` — **function** (não tabela/view) que agrega `partidas` + `partida_participantes` em pontos corridos (vitória=3, empate=1, derrota=0)
+- `partidas` — jogador1, jogador2, placar, tipo (individual/equipe), modalidade (tenis_simples/tenis_duplas/beach_tennis, `migration_002`), placar por set opcional em `sets` (jsonb); `partida_participantes` guarda os demais jogadores das partidas em equipe (lado_a/lado_b)
+- `get_ranking(p_modalidade)` — **function** (não tabela/view) que agrega `partidas` + `partida_participantes` em pontos corridos por modalidade (vitória=3, empate=1, derrota=0); chamada sem argumento agrega todas as modalidades
 
-Row Level Security habilitado em todas as tabelas: associado só vê/edita os próprios dados; admin vê e gerencia tudo (checagem pelo campo `role` em `profiles`).
+Row Level Security habilitado em todas as tabelas, incluindo `partida_participantes` e `quadra_horarios`: associado só vê/edita os próprios dados (ou só lê, conforme a tabela); admin vê e gerencia tudo (checagem pelo campo `role` em `profiles` via `is_admin()`).
 
 ## Módulos e responsáveis
 

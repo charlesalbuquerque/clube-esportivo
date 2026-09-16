@@ -37,6 +37,26 @@ create table quadras (
   descricao text
 );
 
+-- Horários disponíveis de cada quadra
+create table if not exists quadra_horarios (
+  id bigint generated always as identity primary key,
+  quadra_id bigint not null references quadras(id) on delete cascade,
+  dia_semana smallint not null check (dia_semana between 0 and 6),
+  hora_inicio time not null,
+  hora_fim time not null,
+  ativo boolean not null default true,
+  created_at timestamptz not null default now(),
+
+  check (hora_inicio < hora_fim),
+
+  unique (
+    quadra_id,
+    dia_semana,
+    hora_inicio,
+    hora_fim
+  )
+);
+
 -- 4) RESERVAS
 create table reservas (
   id bigint generated always as identity primary key,
@@ -52,14 +72,6 @@ create table reservas (
 );
 
 -- 5) PARTIDAS
---
--- ATENÇÃO: este create table ficou desatualizado em relação ao banco real
--- (achado ao adaptar as telas do design_handoff/ em 2026-09-14). A coluna
--- `tipo` e a tabela `partida_participantes` abaixo já existem no Supabase
--- e são usadas por app/actions/partidas.ts (partida em equipe), mas nunca
--- foram adicionadas aqui. Deixando documentado — quem mexeu direto no SQL
--- Editor sem atualizar este arquivo, por favor mantenha os dois em sync
--- da próxima vez.
 create table partidas (
   id bigint generated always as identity primary key,
   jogador1_id uuid not null references profiles (id) on delete cascade,
@@ -200,6 +212,8 @@ alter table mensalidades enable row level security;
 alter table quadras enable row level security;
 alter table reservas enable row level security;
 alter table partidas enable row level security;
+alter table partida_participantes enable row level security;
+alter table quadra_horarios enable row level security;
 
 -- Função auxiliar pra checar se o usuário logado é admin. Roda como
 -- SECURITY DEFINER (contorna RLS na consulta interna) — necessário porque
@@ -272,6 +286,18 @@ create policy "todos veem quadras"
   on quadras for select
   using (auth.role() = 'authenticated');
 
+-- quadra_horarios: mesma regra de quadras (todo autenticado vê; só admin
+-- escreve). Ficou sem RLS/policies por um tempo depois de criada direto
+-- no SQL Editor — corrigido na migração 004 (2026-09-15).
+create policy "todos veem horarios"
+  on quadra_horarios for select
+  using (auth.role() = 'authenticated');
+
+create policy "admin gerencia horarios"
+  on quadra_horarios for all
+  using (public.is_admin())
+  with check (public.is_admin());
+
 -- reservas: associado vê/cria as próprias; admin vê todas
 create policy "associado gerencia suas reservas"
   on reservas for all
@@ -287,6 +313,18 @@ create policy "todos veem partidas"
 create policy "admin registra partidas"
   on partidas for insert
   with check (exists (select 1 from profiles where id = auth.uid() and role = 'admin'));
+
+-- partida_participantes: mesma regra de partidas (todo autenticado vê;
+-- só admin escreve). Ficou sem RLS/policies por um tempo depois de criada
+-- direto no SQL Editor — corrigido na migração 004 (2026-09-15).
+create policy "todos veem participantes"
+  on partida_participantes for select
+  using (auth.role() = 'authenticated');
+
+create policy "admin gerencia participantes"
+  on partida_participantes for all
+  using (public.is_admin())
+  with check (public.is_admin());
 
 -- ============================================================
 -- CRIAÇÃO AUTOMÁTICA DE PROFILE NO CADASTRO
@@ -316,25 +354,6 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
-  -- Horários disponíveis de cada quadra
-create table if not exists quadra_horarios (
-  id bigint generated always as identity primary key,
-  quadra_id bigint not null references quadras(id) on delete cascade,
-  dia_semana smallint not null check (dia_semana between 0 and 6),
-  hora_inicio time not null,
-  hora_fim time not null,
-  ativo boolean not null default true,
-  created_at timestamptz not null default now(),
-
-  check (hora_inicio < hora_fim),
-
-  unique (
-    quadra_id,
-    dia_semana,
-    hora_inicio,
-    hora_fim
-  )
-);
 create or replace function public.prevent_reserva_overlap()
 returns trigger
 language plpgsql
