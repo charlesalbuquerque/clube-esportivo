@@ -18,8 +18,8 @@ Schema já criado no Supabase (ver `schema.sql` na raiz do projeto). Tabelas:
 - `mensalidades` — vinculada a `profiles.id`, status: pago/pendente/atrasado
 - `quadras` — cadastro de quadras
 - `reservas` — vinculada a `quadras` e `profiles`, com unique(quadra_id, data, hora_inicio) pra impedir conflito de horário
-- `partidas` — jogador1, jogador2, placar
-- `ranking` — **view** calculada a partir de `partidas` (não é tabela)
+- `partidas` — jogador1, jogador2, placar, tipo (individual/equipe); `partida_participantes` guarda os demais jogadores das partidas em equipe
+- `get_ranking()` — **function** (não tabela/view) que agrega `partidas` + `partida_participantes` em pontos corridos (vitória=3, empate=1, derrota=0)
 
 Row Level Security habilitado em todas as tabelas: associado só vê/edita os próprios dados; admin vê e gerencia tudo (checagem pelo campo `role` em `profiles`).
 

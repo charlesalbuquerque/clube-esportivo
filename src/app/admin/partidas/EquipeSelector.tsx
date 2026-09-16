@@ -55,12 +55,12 @@ export default function EquipeSelector({
   ];
 
   return (
-    <div className="rounded-xl border border-line-subtle bg-surface-alt p-4">
-      <h2 className="mb-1 text-sm font-semibold text-ink">
+    <div className="border border-brand-border-soft bg-brand-surface-head p-3">
+      <h3 className="mb-1 text-[11px] font-semibold uppercase tracking-[0.1em] text-brand-muted">
         Participantes das equipes
-      </h2>
+      </h3>
 
-      <p className="mb-5 text-xs text-ink-muted">
+      <p className="mb-4 text-xs text-brand-muted">
         Selecione cada associado e escolha em qual equipe ele irá jogar.
       </p>
 
@@ -74,9 +74,9 @@ export default function EquipeSelector({
       <div className="grid gap-6 md:grid-cols-2">
         {/* EQUIPE A */}
         <div>
-          <h3 className="mb-3 text-sm font-semibold text-ink">
+          <h4 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-brand-muted">
             Equipe A
-          </h3>
+          </h4>
 
           <div className="space-y-2">
             {associados.map((associado) => {
@@ -85,14 +85,15 @@ export default function EquipeSelector({
               return (
                 <label
                   key={associado.id}
-                  className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 text-sm transition ${
+                  className={`flex cursor-pointer items-center gap-3 border px-3 py-2 text-sm ${
                     selecionado
-                      ? "border-accent bg-surface-hover"
-                      : "border-line-subtle bg-surface hover:bg-surface-alt"
+                      ? "border-brand-green-700 bg-white"
+                      : "border-brand-input-border bg-white hover:bg-brand-surface-head"
                   }`}
                 >
                   <input
                     type="checkbox"
+                    className="accent-brand-green-700"
                     checked={selecionado}
                     onChange={() =>
                       adicionarParticipante(
@@ -108,16 +109,16 @@ export default function EquipeSelector({
             })}
           </div>
 
-          <p className="mt-3 text-xs text-ink-muted">
+          <p className="mt-3 text-xs text-brand-muted">
             {ladoA.length} participante(s)
           </p>
         </div>
 
         {/* EQUIPE B */}
         <div>
-          <h3 className="mb-3 text-sm font-semibold text-ink">
+          <h4 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.1em] text-brand-muted">
             Equipe B
-          </h3>
+          </h4>
 
           <div className="space-y-2">
             {associados.map((associado) => {
@@ -126,14 +127,15 @@ export default function EquipeSelector({
               return (
                 <label
                   key={associado.id}
-                  className={`flex cursor-pointer items-center gap-3 rounded-lg border px-3 py-2 text-sm transition ${
+                  className={`flex cursor-pointer items-center gap-3 border px-3 py-2 text-sm ${
                     selecionado
-                      ? "border-accent bg-surface-hover"
-                      : "border-line-subtle bg-surface hover:bg-surface-alt"
+                      ? "border-brand-green-700 bg-white"
+                      : "border-brand-input-border bg-white hover:bg-brand-surface-head"
                   }`}
                 >
                   <input
                     type="checkbox"
+                    className="accent-brand-green-700"
                     checked={selecionado}
                     onChange={() =>
                       adicionarParticipante(
@@ -149,7 +151,7 @@ export default function EquipeSelector({
             })}
           </div>
 
-          <p className="mt-3 text-xs text-ink-muted">
+          <p className="mt-3 text-xs text-brand-muted">
             {ladoB.length} participante(s)
           </p>
         </div>

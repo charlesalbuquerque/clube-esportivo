@@ -85,30 +85,110 @@ create table if not exists partida_participantes (
   unique (partida_id, associado_id)
 );
 
--- 6) RANKING (view calculada — não é tabela, evita dado duplicado/desatualizado)
-create view ranking as
-with jogos as (
-  select jogador1_id as jogador_id,
-         case when placar1 > placar2 then 1 else 0 end as vitoria,
-         case when placar1 < placar2 then 1 else 0 end as derrota
-  from partidas
-  union all
-  select jogador2_id as jogador_id,
-         case when placar2 > placar1 then 1 else 0 end as vitoria,
-         case when placar2 < placar1 then 1 else 0 end as derrota
-  from partidas
+-- 6) RANKING (function, não view — precisa fazer UNION de partidas
+-- individuais com partida_participantes pras partidas em equipe, o que uma
+-- view simples sobre `partidas` não cobre. SECURITY DEFINER porque agrega
+-- full_name de todos os associados, não só do chamador; SET search_path
+-- fixo é obrigatório em toda function SECURITY DEFINER (evita search_path
+-- hijacking). Criada direto no SQL Editor do Supabase — documentada aqui
+-- 2026-09-15 depois de achada via `pg_get_functiondef` (achado ao investigar
+-- por que admin/partidas/page.tsx chamava `rpc("get_ranking")` sem essa
+-- function existir no arquivo). p_modalidade (default null = agrega tudo,
+-- mantém RankingCard.tsx funcionando sem mudança) adicionado na migração
+-- 003 pras abas de modalidade da tela de partidas e ranking.
+create or replace function public.get_ranking(p_modalidade text default null)
+returns table (
+  associado_id uuid,
+  nome text,
+  partidas integer,
+  vitorias integer,
+  empates integer,
+  derrotas integer,
+  pontos integer
 )
-select
-  p.id as associado_id,
-  p.full_name,
-  coalesce(sum(j.vitoria), 0) as vitorias,
-  coalesce(sum(j.derrota), 0) as derrotas,
-  coalesce(sum(j.vitoria), 0) * 3 as pontos   -- 3 pontos por vitória, ajustável
-from profiles p
-left join jogos j on j.jogador_id = p.id
-where p.role = 'associado'
-group by p.id, p.full_name
-order by pontos desc;
+language sql
+stable security definer
+set search_path to 'public'
+as $$
+  with resultados as (
+
+    -- PARTIDAS INDIVIDUAIS
+    select
+      p.jogador1_id as associado_id,
+      case
+        when p.placar1 > p.placar2 then 3
+        when p.placar1 = p.placar2 then 1
+        else 0
+      end as pontos,
+      case when p.placar1 > p.placar2 then 1 else 0 end as vitorias,
+      case when p.placar1 = p.placar2 then 1 else 0 end as empates,
+      case when p.placar1 < p.placar2 then 1 else 0 end as derrotas
+    from partidas p
+    where p.tipo = 'individual'
+      and (p_modalidade is null or p.modalidade = p_modalidade)
+
+    union all
+
+    select
+      p.jogador2_id as associado_id,
+      case
+        when p.placar2 > p.placar1 then 3
+        when p.placar2 = p.placar1 then 1
+        else 0
+      end as pontos,
+      case when p.placar2 > p.placar1 then 1 else 0 end as vitorias,
+      case when p.placar2 = p.placar1 then 1 else 0 end as empates,
+      case when p.placar2 < p.placar1 then 1 else 0 end as derrotas
+    from partidas p
+    where p.tipo = 'individual'
+      and (p_modalidade is null or p.modalidade = p_modalidade)
+
+    union all
+
+    -- PARTIDAS EM EQUIPE
+    select
+      pp.associado_id,
+      case
+        when pp.lado = 'lado_a' and p.placar1 > p.placar2 then 3
+        when pp.lado = 'lado_b' and p.placar2 > p.placar1 then 3
+        when p.placar1 = p.placar2 then 1
+        else 0
+      end as pontos,
+      case
+        when pp.lado = 'lado_a' and p.placar1 > p.placar2 then 1
+        when pp.lado = 'lado_b' and p.placar2 > p.placar1 then 1
+        else 0
+      end as vitorias,
+      case
+        when p.placar1 = p.placar2 then 1
+        else 0
+      end as empates,
+      case
+        when pp.lado = 'lado_a' and p.placar1 < p.placar2 then 1
+        when pp.lado = 'lado_b' and p.placar2 < p.placar1 then 1
+        else 0
+      end as derrotas
+    from partidas p
+    join partida_participantes pp
+      on pp.partida_id = p.id
+    where p.tipo = 'equipe'
+      and (p_modalidade is null or p.modalidade = p_modalidade)
+  )
+
+  select
+    r.associado_id,
+    pr.full_name as nome,
+    count(*)::integer as partidas,
+    sum(r.vitorias)::integer as vitorias,
+    sum(r.empates)::integer as empates,
+    sum(r.derrotas)::integer as derrotas,
+    sum(r.pontos)::integer as pontos
+  from resultados r
+  join profiles pr
+    on pr.id = r.associado_id
+  group by r.associado_id, pr.full_name
+  order by pontos desc, vitorias desc, nome asc;
+$$;
 
 -- ============================================================
 -- ROW LEVEL SECURITY (RLS)

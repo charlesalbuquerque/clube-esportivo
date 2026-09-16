@@ -2,11 +2,46 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
+import { isModalidade } from "@/app/admin/partidas/modalidades";
 
 type Participante = {
   associado_id: string;
   lado: "lado_a" | "lado_b";
 };
+
+type SetEntry = {
+  a: number;
+  b: number;
+};
+
+function parseSets(raw: FormDataEntryValue | null): SetEntry[] {
+  let sets: unknown;
+
+  try {
+    sets = JSON.parse(String(raw ?? "[]"));
+  } catch {
+    throw new Error("Placar por set inválido.");
+  }
+
+  if (!Array.isArray(sets) || sets.length === 0) {
+    throw new Error("Registre o placar de pelo menos um set.");
+  }
+
+  for (const set of sets) {
+    if (
+      typeof set !== "object" ||
+      set === null ||
+      !Number.isInteger((set as SetEntry).a) ||
+      !Number.isInteger((set as SetEntry).b) ||
+      (set as SetEntry).a < 0 ||
+      (set as SetEntry).b < 0
+    ) {
+      throw new Error("Placar por set inválido.");
+    }
+  }
+
+  return sets as SetEntry[];
+}
 
 export async function createPartida(
   redirectTo: string,
@@ -15,15 +50,18 @@ export async function createPartida(
   const supabase = await createClient();
 
   const tipo = String(formData.get("tipo") ?? "").trim();
+  const modalidade = String(formData.get("modalidade") ?? "").trim();
   const data = String(formData.get("data") ?? "").trim();
   const quadraIdRaw = String(formData.get("quadra_id") ?? "").trim();
   const jogador1Id = String(formData.get("jogador1_id") ?? "").trim();
   const jogador2Id = String(formData.get("jogador2_id") ?? "").trim();
-  const placar1Raw = String(formData.get("placar1") ?? "").trim();
-  const placar2Raw = String(formData.get("placar2") ?? "").trim();
 
   if (tipo !== "individual" && tipo !== "equipe") {
     throw new Error("Tipo de partida inválido.");
+  }
+
+  if (!isModalidade(modalidade)) {
+    throw new Error("Modalidade inválida.");
   }
 
   if (!data) {
@@ -36,18 +74,16 @@ export async function createPartida(
     throw new Error("Quadra inválida.");
   }
 
-  const placar1 = Number(placar1Raw);
-  const placar2 = Number(placar2Raw);
+  const sets = parseSets(formData.get("sets"));
 
-  if (
-    !Number.isInteger(placar1) ||
-    !Number.isInteger(placar2) ||
-    placar1 < 0 ||
-    placar2 < 0
-  ) {
-    throw new Error(
-      "Os placares devem ser números inteiros maiores ou iguais a zero."
-    );
+  // placar1/placar2 são o agregado (sets ganhos) — derivado do placar por
+  // set, nunca aceito direto do cliente, pra não deixar os dois discordarem.
+  let placar1 = 0;
+  let placar2 = 0;
+
+  for (const set of sets) {
+    if (set.a > set.b) placar1 += 1;
+    else if (set.b > set.a) placar2 += 1;
   }
 
   /*
@@ -66,10 +102,12 @@ export async function createPartida(
       .from("partidas")
       .insert({
         tipo,
+        modalidade,
         jogador1_id: jogador1Id,
         jogador2_id: jogador2Id,
         placar1,
         placar2,
+        sets,
         quadra_id: quadraId,
         data,
       });
@@ -144,10 +182,12 @@ export async function createPartida(
       .from("partidas")
       .insert({
         tipo,
+        modalidade,
         jogador1_id: ladoA[0].associado_id,
         jogador2_id: ladoB[0].associado_id,
         placar1,
         placar2,
+        sets,
         quadra_id: quadraId,
         data,
       })
