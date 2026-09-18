@@ -54,19 +54,21 @@ export async function UltimasPartidasCard() {
 
     const historico = (partidas ?? []) as Partida[];
 
-    const idsAdversarios = historico.map((p) =>
-      p.jogador1_id === profile.id ? p.jogador2_id : p.jogador1_id
+    // RLS de profiles só deixa o associado ler o próprio perfil — não dá
+    // pra buscar o nome do adversário direto na tabela. get_ranking() é
+    // SECURITY DEFINER e já traz o nome de qualquer um que tenha alguma
+    // partida (todo adversário aqui necessariamente tem), então reusamos
+    // ela em vez de abrir a RLS de profiles pra isso.
+    const { data: ranking, error: rankingError } = await supabase.rpc(
+      "get_ranking"
     );
 
-    const { data: perfis, error: perfisError } = await supabase
-      .from("profiles")
-      .select("id, full_name")
-      .in("id", idsAdversarios.length > 0 ? idsAdversarios : [profile.id]);
-
-    if (perfisError) throw perfisError;
+    if (rankingError) throw rankingError;
 
     const nomesPorId = new Map(
-      (perfis ?? []).map((p) => [p.id, p.full_name as string])
+      ((ranking ?? []) as { associado_id: string; nome: string }[]).map(
+        (r) => [r.associado_id, r.nome]
+      )
     );
 
     linhas = historico.map((p) => {
