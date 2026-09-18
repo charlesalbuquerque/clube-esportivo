@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentProfile } from "@/lib/auth";
 
-const CLUB_NAME = "Clube Esportivo";
+const CLUB_NAME = "Conexão Esportiva";
 const CLUB_INITIALS = "CE";
 
 const STATS = [

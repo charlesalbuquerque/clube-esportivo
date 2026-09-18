@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useActionState, useState } from "react";
 import { login } from "@/app/actions/auth";
 
-const CLUB_NAME = "Clube Esportivo";
+const CLUB_NAME = "Conexão Esportiva";
 const CLUB_INITIALS = "CE";
 
 const STATS = [

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logout } from "@/app/actions/auth";
 
-const CLUB_NAME = "Clube Esportivo";
+const CLUB_NAME = "Conexão Esportiva";
 const CLUB_INITIALS = "CE";
 
 type NavItem = {

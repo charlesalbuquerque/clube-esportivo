@@ -40,7 +40,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gestão de Clube Esportivo",
+  title: "Conexão Esportiva",
   description:
     "Sistema de gestão de associados, mensalidades, quadras e ranking do clube.",
 };
